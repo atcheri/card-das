@@ -1,6 +1,8 @@
 import { FC } from 'react';
 import { Outlet } from 'react-router-dom';
 
+import Footer from './Footer';
+
 const container = 'min-h-screen flex xl:flex-row flex-col relative';
 const content = 'flex flex-1 justify-between bg-siteblack py-8 sm:px-12 px-8 flex-col';
 const logo = 'w-[160px] h-[60px] object-contain cursor-pointer';
@@ -15,6 +17,7 @@ const MainLayout: FC = () => {
         <div className={body}>
           <Outlet />
         </div>
+        <Footer />
       </div>
     </main>
   );

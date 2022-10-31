@@ -5,7 +5,7 @@ import HeaderOne from '../../components/Headers/HeaderOne';
 const CreateBattle: FC = () => {
   return (
     <>
-      <HeaderOne title="Create a new Battle" subTitle="This is where Epic battles start." />
+      <HeaderOne Title={<h1>Create a new Battle</h1>} SubTitle={<h2>This is where Epic battles start.</h2>} />
     </>
   );
 };
