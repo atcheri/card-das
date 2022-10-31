@@ -1,3 +1,3 @@
 export const isEthereum = (): boolean => {
-  return !!window.ethereum;
+  return !window.ethereum;
 };
