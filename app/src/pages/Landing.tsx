@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
 import HeaderOne from '../components/Headers/HeaderOne';
+import PlayerForm from '../components/PlayerForm';
 
 const Landing: FC = () => {
   return (
@@ -11,8 +12,13 @@ const Landing: FC = () => {
             CARD - DAS <br /> THE NFT FIGHT ARENA
           </h1>
         }
-        SubTitle={<h2>This is where Epic battles start.</h2>}
+        SubTitle={
+          <h2>
+            This is where Epic <span className="font-omega">battles</span> begin
+          </h2>
+        }
       />
+      <PlayerForm />
     </>
   );
 };

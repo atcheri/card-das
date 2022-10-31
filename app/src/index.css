@@ -8,8 +8,8 @@
 
 @font-face {
   font-family: 'omega-centauri-Medium';
-  src: url('../public/fonts/omega-centauri/omega-centauri-Medium.eot');
-  src: url('../public/fonts/omega-centauri/omega-centauri-Medium.eot?#') format('embedded-opentype'),
-    url('../public/fonts/omega-centauri/omega-centauri-Medium.woff') format('woff'),
-    url('../public/fonts/omega-centauri/omega-centauri-Medium.ttf') format('truetype');
+  src: url('/fonts/omega-centauri/omega-centauri-Medium.eot');
+  src: url('/fonts/omega-centauri/omega-centauri-Medium.eot?#') format('embedded-opentype'),
+    url('/fonts/omega-centauri/omega-centauri-Medium.woff') format('woff'),
+    url('/fonts/omega-centauri/omega-centauri-Medium.ttf') format('truetype');
 }
