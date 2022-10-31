@@ -1,0 +1,11 @@
+.headers-main::before {
+  content: '';
+  display: flex;
+  width: 6px;
+  height: 100%;
+  background: #0e79b2;
+  margin-right: 12px;
+}
+
+.headers-sub {
+}

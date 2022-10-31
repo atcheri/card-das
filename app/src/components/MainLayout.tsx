@@ -12,8 +12,9 @@ const MainLayout: FC = () => {
     <main className={container}>
       <div className={content}>
         <img src={logoPath} alt="card-das-online-game-logo" className={logo} />
-        <h1 className="font-omega">CARD - DAS</h1>
-        <Outlet />
+        <div className={body}>
+          <Outlet />
+        </div>
       </div>
     </main>
   );

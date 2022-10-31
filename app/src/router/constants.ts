@@ -1,3 +1,5 @@
 export const ROUTES = Object.freeze({
-  HOME: "/",
+  HOME: '/',
+  BATTLE: 'battle',
+  CREATE: 'create',
 });
