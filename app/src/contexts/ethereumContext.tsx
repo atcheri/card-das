@@ -1,7 +1,9 @@
 import { createContext, FC, PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { ethers } from 'ethers';
 import Web3Modal from 'web3modal';
+
 import { ABI, ADDRESS } from '../contract';
+import { isEthereum } from '../utils/ethereum';
 
 type AlertType = {
   status: boolean;
@@ -31,6 +33,10 @@ export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children })
   const [alert, setAlert] = useState<AlertType>(defaultAlert);
 
   const updateWalletAddress = async () => {
+    if (isEthereum()) {
+      return;
+    }
+
     const accounts = await window.ethereum.request({
       method: 'eth_requestAccounts',
     });
@@ -41,6 +47,9 @@ export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children })
   };
 
   useEffect(() => {
+    if (isEthereum()) {
+      return;
+    }
     updateWalletAddress();
     window.ethereum.on('accountsChanged', updateWalletAddress);
   }, []);
