@@ -1,5 +1,15 @@
-@import url("http://fonts.cdnfonts.com/css/plavsky-condensed");
+@import url('http://fonts.cdnfonts.com/css/plavsky-condensed');
+/* @import url('http://fonts.cdnfonts.com/css/alcatraz'); */
+/* @import url('https://www.dafontfree.net/embed/bG9tYm9rLXJlZ3VsYXImZGF0YS84MDQvbC8xODgwMjkvTG9tYm9rLm90Zg'); */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: 'omega-centauri-Medium';
+  src: url('../public/fonts/omega-centauri/omega-centauri-Medium.eot');
+  src: url('../public/fonts/omega-centauri/omega-centauri-Medium.eot?#') format('embedded-opentype'),
+    url('../public/fonts/omega-centauri/omega-centauri-Medium.woff') format('woff'),
+    url('../public/fonts/omega-centauri/omega-centauri-Medium.ttf') format('truetype');
+}
