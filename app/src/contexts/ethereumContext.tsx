@@ -1,9 +1,12 @@
 import { createContext, FC, PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { ethers } from 'ethers';
+import { Result } from 'ethers/lib/utils';
 import Web3Modal from 'web3modal';
 
 import { ABI, ADDRESS } from '../contract';
-import { isEthereum } from '../utils/ethereum';
+import { isNotEthereum } from '../utils/ethereum';
+import { createNewPlayerEventHandler } from '../events/createPlayerEvent';
+import { Player } from '../types';
 
 type AlertType = {
   status: boolean;
@@ -15,6 +18,8 @@ type EthereumContextProps = {
   contract: ethers.Contract | null;
   walletAddress: string;
   alert: AlertType;
+  isPlayerAlreadyRegistered: (address: string) => Promise<boolean>;
+  getPlayerInfo: (address: string) => Promise<Player>;
   setShowAlert: (alert: AlertType) => void;
 };
 
@@ -33,7 +38,7 @@ export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children })
   const [alert, setAlert] = useState<AlertType>(defaultAlert);
 
   const updateWalletAddress = async () => {
-    if (isEthereum()) {
+    if (isNotEthereum()) {
       return;
     }
 
@@ -47,9 +52,10 @@ export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children })
   };
 
   useEffect(() => {
-    if (isEthereum()) {
+    if (isNotEthereum()) {
       return;
     }
+
     updateWalletAddress();
     window.ethereum.on('accountsChanged', updateWalletAddress);
   }, []);
@@ -70,6 +76,21 @@ export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children })
   }, []);
 
   useEffect(() => {
+    if (!contract || !provider) {
+      return;
+    }
+
+    createNewPlayerEventHandler({
+      contract,
+      provider,
+      address: walletAddress,
+      callbackWithResult: (result: Result) => {
+        setAlert({ status: true, type: 'success', message: `Player registered with address: ${result.owner}` });
+      },
+    });
+  }, [contract, provider, walletAddress]);
+
+  useEffect(() => {
     const timeout = setTimeout(() => {
       setAlert(defaultAlert);
     }, 5_000);
@@ -83,10 +104,31 @@ export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children })
     setAlert(alert);
   };
 
+  const isPlayerAlreadyRegistered = (address: string): Promise<boolean> => {
+    return contract && contract.isPlayer(address);
+  };
+
+  const getPlayerInfo = async (address: string): Promise<Player> => {
+    if (!contract) {
+      throw Error('No contract defined to get Player information');
+    }
+
+    const player = await contract.getPlayer(address);
+    return {
+      address: player.playerAddress,
+      name: player.playerName,
+      mana: player.playerMana,
+      health: player.playerHealth,
+      inBattle: player.inBattle,
+    };
+  };
+
   const value: EthereumContextProps = {
     contract,
     walletAddress,
     alert,
+    isPlayerAlreadyRegistered,
+    getPlayerInfo,
     setShowAlert: handleAlert,
   };
   return <EthereumContext.Provider value={value}>{children}</EthereumContext.Provider>;

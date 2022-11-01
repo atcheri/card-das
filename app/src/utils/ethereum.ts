@@ -1,3 +1,5 @@
 export const isEthereum = (): boolean => {
-  return !window.ethereum;
+  return !!window.ethereum;
 };
+
+export const isNotEthereum = () => !isEthereum();

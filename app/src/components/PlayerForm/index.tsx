@@ -1,4 +1,5 @@
 import { ChangeEvent, FC, FormEvent, useState } from 'react';
+
 import useEthContext from '../../hooks/useEthContext';
 import PrimaryButton from '../buttons/PrimaryButton';
 
@@ -9,7 +10,7 @@ const nameRegex = /^[A-Z-a-z0-9]+$/;
 type PlayerFormProps = {};
 
 const PlayerForm: FC<PlayerFormProps> = () => {
-  const { contract, walletAddress, setShowAlert } = useEthContext();
+  const { contract, walletAddress, isPlayerAlreadyRegistered, setShowAlert } = useEthContext();
   const [playerName, setPlayerName] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -28,8 +29,8 @@ const PlayerForm: FC<PlayerFormProps> = () => {
 
     setLoading(true);
     try {
-      const playerAlreadyExists = await contract.isPlayer(walletAddress);
-      if (playerAlreadyExists) {
+      const isPlayerRegistered = await isPlayerAlreadyRegistered(walletAddress);
+      if (isPlayerRegistered) {
         setShowAlert({
           status: true,
           type: 'warning',
