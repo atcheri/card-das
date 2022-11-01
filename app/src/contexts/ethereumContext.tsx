@@ -15,7 +15,9 @@ type AlertType = {
 };
 
 type EthereumContextProps = {
+  checkingPlayer: boolean;
   contract: ethers.Contract | null;
+  player: Player | null;
   walletAddress: string;
   alert: AlertType;
   isPlayerAlreadyRegistered: (address: string) => Promise<boolean>;
@@ -32,6 +34,8 @@ const defaultAlert: AlertType = {
 export const EthereumContext = createContext({} as EthereumContextProps);
 
 export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
+  const [checkingPlayer, setCheckingPlayer] = useState(true);
+  const [player, setPlayer] = useState<Player | null>(null);
   const [walletAddress, setWalletAddress] = useState('');
   const [provider, setProvider] = useState<ethers.providers.Web3Provider>();
   const [contract, setContract] = useState<ethers.Contract | null>(null);
@@ -50,6 +54,19 @@ export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children })
       setWalletAddress(accounts[0]);
     }
   };
+
+  const updatePlayer = async (addr: string) => {
+    setPlayer(await getPlayerInfo(addr));
+    setCheckingPlayer(!checkingPlayer);
+  };
+
+  useEffect(() => {
+    if (!contract || !walletAddress) {
+      return;
+    }
+
+    updatePlayer(walletAddress);
+  }, [contract, walletAddress]);
 
   useEffect(() => {
     if (isNotEthereum()) {
@@ -124,7 +141,9 @@ export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children })
   };
 
   const value: EthereumContextProps = {
+    checkingPlayer,
     contract,
+    player,
     walletAddress,
     alert,
     isPlayerAlreadyRegistered,
