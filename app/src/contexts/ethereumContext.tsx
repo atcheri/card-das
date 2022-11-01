@@ -56,8 +56,12 @@ export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children })
   };
 
   const updatePlayer = async (addr: string) => {
-    setPlayer(await getPlayerInfo(addr));
-    setCheckingPlayer(!checkingPlayer);
+    try {
+      setPlayer(await getPlayerInfo(addr));
+    } catch (err) {
+    } finally {
+      setCheckingPlayer(!checkingPlayer);
+    }
   };
 
   useEffect(() => {
