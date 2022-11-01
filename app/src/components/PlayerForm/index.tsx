@@ -70,8 +70,8 @@ const PlayerForm: FC<PlayerFormProps> = () => {
         placeholder="How should we call you?"
         disabled={loading}
       />
-      <PrimaryButton disabled={loading} extraStyle="my-4" type="submit">
-        Enter
+      <PrimaryButton loading={loading} disabled={loading} extraStyle="my-4" type="submit">
+        Enter the arena
       </PrimaryButton>
     </form>
   );

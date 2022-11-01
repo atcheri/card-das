@@ -1,7 +1,10 @@
 import { FC } from 'react';
+import { Link } from 'react-router-dom';
+import PrimaryButton from '../components/buttons/PrimaryButton';
 
 import HeaderOne from '../components/Headers/HeaderOne';
 import PlayerForm from '../components/PlayerForm';
+import { ROUTES } from '../router/constants';
 
 const Landing: FC = () => {
   return (
@@ -19,6 +22,9 @@ const Landing: FC = () => {
         }
       />
       <PlayerForm />
+      <Link to={`${ROUTES.HOME}${ROUTES.BATTLE}/${ROUTES.CREATE}`}>
+        <PrimaryButton>TO ARENA</PrimaryButton>
+      </Link>
     </>
   );
 };

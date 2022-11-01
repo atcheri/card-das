@@ -12,7 +12,7 @@ const Router: FC = () => {
       <Routes>
         <Route path={ROUTES.HOME} element={<MainLayout />}>
           <Route path="/" element={<Landing />} />
-          <Route path={`${ROUTES.HOME}/${ROUTES.BATTLE}`}>
+          <Route path={`${ROUTES.HOME}${ROUTES.BATTLE}`}>
             <Route path={ROUTES.CREATE} element={<CreateBattle />} />
           </Route>
         </Route>

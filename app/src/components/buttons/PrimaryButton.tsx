@@ -1,15 +1,16 @@
 import { ButtonHTMLAttributes, FC, PropsWithChildren } from 'react';
 
 interface PrimaryButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  extraStyle: string;
+  extraStyle?: string;
+  loading?: boolean;
 }
 
-const PrimaryButton: FC<PropsWithChildren<PrimaryButtonProps>> = ({ children, disabled, extraStyle, type }) => {
+const PrimaryButton: FC<PropsWithChildren<PrimaryButtonProps>> = ({ children, extraStyle, loading, ...rest }) => {
   return (
     <button
-      type={type}
-      className={`font-omega px-4 py-2 rounded-lg bg-siteBlue w-fit text-white font-bold ${extraStyle}`}>
-      {disabled ? (
+      className={`font-omega px-4 py-2 rounded-lg bg-siteBlue w-fit text-white font-bold ${extraStyle}`}
+      {...rest}>
+      {loading ? (
         <>
           <svg
             role="status"
