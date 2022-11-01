@@ -4,10 +4,8 @@ import useEthContext from '../../hooks/useEthContext';
 import { isNotEthereum } from '../../utils/ethereum';
 import ActivateWalletInfo from '../ActivateWalletInfo';
 import PrimaryButton from '../buttons/PrimaryButton';
-
-const label = 'font-semibold text-2xl text-white mb-3';
-const input = 'bg-siteDimBlack text-white outline-none focus:outline-siteBlue p-4 rounded-md sm:max-w-[50%] max-w-full';
-const nameRegex = /^[A-Z-a-z0-9]+$/;
+import { validateName } from '../../utils/validators';
+import * as styles from '../../styles';
 
 type PlayerFormProps = {};
 
@@ -18,7 +16,7 @@ const PlayerForm: FC<PlayerFormProps> = () => {
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    if (!value || nameRegex.test(value)) {
+    if (validateName(value)) {
       setPlayerName(value);
     }
   };
@@ -64,14 +62,14 @@ const PlayerForm: FC<PlayerFormProps> = () => {
 
   return (
     <form className="flex flex-col" onSubmit={handleSubmit}>
-      <label htmlFor="player-name" className={label}>
+      <label htmlFor="player-name" className={styles.label}>
         Enter the <span className="font-omega">COLYSEE</span>
       </label>
       <input
         name="player-name"
         id="player-name"
         value={playerName}
-        className={input}
+        className={styles.input}
         onChange={handleNameChange}
         placeholder="How should we call you?"
         disabled={loading}
