@@ -4,7 +4,7 @@ import { Result } from 'ethers/lib/utils';
 import Web3Modal from 'web3modal';
 
 import { ABI, ADDRESS } from '../contract';
-import { isNotEthereum } from '../utils/ethereum';
+import { isEthereum, isNotEthereum } from '../utils/ethereum';
 import { createNewPlayerEventHandler } from '../events/createPlayerEvent';
 import { Player } from '../types';
 
@@ -34,7 +34,7 @@ const defaultAlert: AlertType = {
 export const EthereumContext = createContext({} as EthereumContextProps);
 
 export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
-  const [checkingPlayer, setCheckingPlayer] = useState(true);
+  const [checkingPlayer, setCheckingPlayer] = useState(() => isEthereum());
   const [player, setPlayer] = useState<Player | null>(null);
   const [walletAddress, setWalletAddress] = useState('');
   const [provider, setProvider] = useState<ethers.providers.Web3Provider>();

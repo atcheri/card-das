@@ -1,6 +1,8 @@
 import { ChangeEvent, FC, FormEvent, useState } from 'react';
 
 import useEthContext from '../../hooks/useEthContext';
+import { isNotEthereum } from '../../utils/ethereum';
+import ActivateWalletInfo from '../ActivateWalletInfo';
 import PrimaryButton from '../buttons/PrimaryButton';
 
 const label = 'font-semibold text-2xl text-white mb-3';
@@ -55,6 +57,10 @@ const PlayerForm: FC<PlayerFormProps> = () => {
       setLoading(false);
     }
   };
+
+  if (isNotEthereum()) {
+    return <ActivateWalletInfo />;
+  }
 
   return (
     <form className="flex flex-col" onSubmit={handleSubmit}>

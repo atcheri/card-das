@@ -18,7 +18,7 @@ const Footer: FC = () => {
       <a href="https://tailwind-elements.com/" target="_blank" className="text-blue-500">
         Tailwind css <TbBrandTailwind className="inline-block text-blue-400" />
       </a>
-      <div className="p-4">© {new Date().getFullYear()} No Copyright:</div>
+      <div className="p-4">© {new Date().getFullYear()} No Copyright</div>
     </footer>
   );
 };
