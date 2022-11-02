@@ -3,6 +3,8 @@ import { ButtonHTMLAttributes, FC, PropsWithChildren } from 'react';
 export interface DefaultButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   color?: string;
   extraStyle?: string;
+  font?: string;
+  fontColor?: string;
   loading?: boolean;
   loadingText?: string;
   textColor?: string;
@@ -10,15 +12,19 @@ export interface DefaultButtonProps extends ButtonHTMLAttributes<HTMLButtonEleme
 
 const DefaultButton: FC<PropsWithChildren<DefaultButtonProps>> = ({
   children,
-  color = 'white',
+  color = 'bg-slate-100',
   extraStyle,
+  font = 'font-omega',
+  fontColor = 'text-gray-800',
   loading,
   loadingText = 'Entering ...',
   textColor = 'text-white',
   ...rest
 }) => {
   return (
-    <button className={`font-omega px-4 py-2 rounded-lg ${color} w-fit ${textColor} font-bold ${extraStyle}`} {...rest}>
+    <button
+      className={`${font} ${fontColor} bg- px-4 py-2 rounded-lg ${color} w-fit ${textColor} font-bold ${extraStyle}`}
+      {...rest}>
       {loading ? (
         <>
           <svg

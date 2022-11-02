@@ -8,6 +8,7 @@ module.exports = {
         siteDimBlack: '#1E1A1D',
         siteFooter: '#17140F',
         siteBlue: '#0E79B2',
+        siteDimBlue: '#145bad',
         siteRed: '#C33149',
         siteViolet: '#5F4B66',
         siteWhite: '#9eacc7',
