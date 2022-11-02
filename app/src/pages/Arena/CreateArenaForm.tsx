@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, FormEvent, useState } from 'react';
+import { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react';
 
 import PrimaryButton from '../../components/buttons/PrimaryButton';
 import useAlertContext from '../../hooks/useAlertContext';
@@ -11,8 +11,8 @@ type CreateArenaFormProps = {};
 
 const CreateArenaForm: FC<CreateArenaFormProps> = () => {
   const { setAlert } = useAlertContext();
-  const { arena, createArena } = useArenaContext();
-  const [waiting, setWaiting] = useState(false);
+  const { arena, createArena, isWaiting } = useArenaContext();
+
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -42,7 +42,7 @@ const CreateArenaForm: FC<CreateArenaFormProps> = () => {
 
   return (
     <>
-      {waiting && <ArenaWaitingRoom />}
+      {isWaiting && <ArenaWaitingRoom />}
       <form className="flex flex-col" onSubmit={handleSubmit}>
         <label htmlFor="arena-name" className={styles.label}>
           Enter your <span className="font-omega">ARENA NAME</span>

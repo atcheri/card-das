@@ -28,6 +28,12 @@ export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children })
   const [provider, setProvider] = useState<ethers.providers.Web3Provider>();
   const [contract, setContract] = useState<ethers.Contract | null>(null);
 
+  const resetContext = () => {
+    resetAlert();
+    setPlayer(null);
+    setWalletAddress('');
+  };
+
   const updateWalletAddress = async () => {
     if (isNotEthereum()) {
       return;
@@ -46,6 +52,7 @@ export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children })
     try {
       setPlayer(await getPlayerInfo(addr));
     } catch (err) {
+      resetContext();
     } finally {
       setCheckingPlayer(!checkingPlayer);
     }

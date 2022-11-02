@@ -7,6 +7,7 @@ export type Player = {
 };
 
 export enum ArenaStatus {
+  NULL = -1,
   PENDING,
   STARTED,
   ENDED,

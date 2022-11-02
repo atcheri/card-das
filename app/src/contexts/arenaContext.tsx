@@ -13,7 +13,7 @@ type ArenaContextProps = {
 export const ArenaContext = createContext<ArenaContextProps>({} as ArenaContextProps);
 
 const initialArena: Arena = {
-  status: ArenaStatus.PENDING,
+  status: ArenaStatus.NULL,
   hash: '0X0',
   name: '',
   players: [],
@@ -57,11 +57,15 @@ export const ArenaContextProvider: FC<PropsWithChildren<{}>> = ({ children }) =>
     const loadOnContractChange = async () => {
       const arenas = await loadAllArenas(contract, player);
       const firstArena = arenas.filter((a) => a.status === ArenaStatus.PENDING || ArenaStatus.STARTED).shift();
-      firstArena && setArena(firstArena);
+      !!firstArena ? setArena(firstArena) : setArena(initialArena);
     };
 
     loadOnContractChange();
   }, [contract, player]);
+
+  useEffect(() => {
+    arena.status === ArenaStatus.PENDING ? setIsWaiting(true) : setIsWaiting(false);
+  }, [arena]);
 
   const createArena = async (arenaName: string) => {
     if (!contract) {

@@ -41,9 +41,11 @@ const ArenaWaitingRoom: FC = () => {
           Meditate the place of your fight
         </p>
         {player && (
-          <div className="flex justify-evenly items-center mt-20">
+          <div className="flex justify-evenly items-center mt-20 flex-col sm:flex-row">
             <WaitingChallenger address={player.address}></WaitingChallenger>
-            <span className="font-omega rounded-full bg-siteRed p-4 mx-12 border-2 border-red-900 text-3xl">VS</span>
+            <span className="font-omega rounded-full bg-siteRed p-4 max-sm:my-8 sm:mx-12 border-2 border-red-900 sm:text-3xl">
+              VS
+            </span>
             <WaitingChallenger address={openent.address}></WaitingChallenger>
           </div>
         )}
