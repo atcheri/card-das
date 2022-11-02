@@ -121,8 +121,8 @@ export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children })
     return {
       address: player.playerAddress,
       name: player.playerName,
-      mana: player.playerMana,
-      health: player.playerHealth,
+      mana: player.playerMana.toNumber(),
+      health: player.playerHealth.toNumber(),
       inBattle: player.inBattle,
     };
   };
