@@ -1,8 +1,7 @@
 import { FC } from 'react';
-
 import { IoAlertCircleOutline } from 'react-icons/io5';
 
-import useEthContext from '../hooks/useEthContext';
+import useAlertContext from '../hooks/useAlertContext';
 
 type AlertProps = {};
 
@@ -14,7 +13,7 @@ const alertStyles = {
 };
 
 const Alert: FC<AlertProps> = () => {
-  const { alert } = useEthContext();
+  const { alert } = useAlertContext();
 
   if (!alert.status) {
     return null;

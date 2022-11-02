@@ -1,12 +1,16 @@
 import { ChangeEvent, FC, FormEvent, useState } from 'react';
 
 import PrimaryButton from '../../components/buttons/PrimaryButton';
+import useAlertContext from '../../hooks/useAlertContext';
+import useArenaContext from '../../hooks/useArenaContext';
 import * as styles from '../../styles';
 import { validateName } from '../../utils/validators';
 
-type CreateBattleFormProps = {};
+type CreateArenaFormProps = {};
 
-const CreateBattleForm: FC<CreateBattleFormProps> = () => {
+const CreateArenaForm: FC<CreateArenaFormProps> = () => {
+  const { setAlert } = useAlertContext();
+  const { arena, createArena } = useArenaContext();
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -19,16 +23,29 @@ const CreateBattleForm: FC<CreateBattleFormProps> = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    try {
+      setLoading(true);
+      await createArena(name);
+      setAlert({ status: true, type: 'success', message: `The arena ${name} has succesfully been created.` });
+    } catch (error) {
+      setAlert({
+        status: true,
+        type: 'error',
+        message: `There was an error while creating your arena ${name}. Try again later.`,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <form className="flex flex-col" onSubmit={handleSubmit}>
-      <label htmlFor="battle-name" className={styles.label}>
-        Enter your <span className="font-omega">BATTLE NAME</span>
+      <label htmlFor="arena-name" className={styles.label}>
+        Enter your <span className="font-omega">ARENA NAME</span>
       </label>
       <input
-        name="battle-name"
-        id="battle-name"
+        name="arena-name"
+        id="arena-name"
         value={name}
         className={styles.input}
         onChange={handleNameChange}
@@ -42,4 +59,4 @@ const CreateBattleForm: FC<CreateBattleFormProps> = () => {
   );
 };
 
-export default CreateBattleForm;
+export default CreateArenaForm;

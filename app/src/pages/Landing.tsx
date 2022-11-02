@@ -21,7 +21,7 @@ const Landing: FC = () => {
         }
         SubTitle={
           <h2>
-            Where Epic <span className="font-omega">battles</span> begin
+            Where Epic <span className="font-omega">fights</span> begin
           </h2>
         }
       />
@@ -31,7 +31,7 @@ const Landing: FC = () => {
           <div> Loading player data... </div>
         </div>
       ) : player ? (
-        <Link to={`${ROUTES.HOME}${ROUTES.BATTLE}/${ROUTES.CREATE}`}>
+        <Link to={`${ROUTES.HOME}${ROUTES.ARENA}/${ROUTES.CREATE}`}>
           <PrimaryButton>TO ARENA</PrimaryButton>
         </Link>
       ) : (

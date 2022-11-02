@@ -1,4 +1,4 @@
-import { createContext, FC, PropsWithChildren, useEffect, useRef, useState } from 'react';
+import { createContext, FC, PropsWithChildren, useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import { Result } from 'ethers/lib/utils';
 import Web3Modal from 'web3modal';
@@ -7,39 +7,26 @@ import { ABI, ADDRESS } from '../contract';
 import { isEthereum, isNotEthereum } from '../utils/ethereum';
 import { createNewPlayerEventHandler } from '../events/createPlayerEvent';
 import { Player } from '../types';
-
-type AlertType = {
-  status: boolean;
-  type: 'info' | 'success' | 'warning' | 'error';
-  message: string;
-};
+import useAlertContext from '../hooks/useAlertContext';
 
 type EthereumContextProps = {
   checkingPlayer: boolean;
   contract: ethers.Contract | null;
   player: Player | null;
   walletAddress: string;
-  alert: AlertType;
   isPlayerAlreadyRegistered: (address: string) => Promise<boolean>;
   getPlayerInfo: (address: string) => Promise<Player>;
-  setShowAlert: (alert: AlertType) => void;
-};
-
-const defaultAlert: AlertType = {
-  status: false,
-  type: 'info',
-  message: '',
 };
 
 export const EthereumContext = createContext({} as EthereumContextProps);
 
 export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
+  const { resetAlert, setAlert } = useAlertContext();
   const [checkingPlayer, setCheckingPlayer] = useState(() => isEthereum());
   const [player, setPlayer] = useState<Player | null>(null);
   const [walletAddress, setWalletAddress] = useState('');
   const [provider, setProvider] = useState<ethers.providers.Web3Provider>();
   const [contract, setContract] = useState<ethers.Contract | null>(null);
-  const [alert, setAlert] = useState<AlertType>(defaultAlert);
 
   const updateWalletAddress = async () => {
     if (isNotEthereum()) {
@@ -113,17 +100,13 @@ export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children })
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setAlert(defaultAlert);
+      resetAlert();
     }, 5_000);
 
     return () => {
       clearTimeout(timeout);
     };
   }, [alert]);
-
-  const handleAlert = (alert: AlertType) => {
-    setAlert(alert);
-  };
 
   const isPlayerAlreadyRegistered = (address: string): Promise<boolean> => {
     return contract && contract.isPlayer(address);
@@ -149,10 +132,8 @@ export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children })
     contract,
     player,
     walletAddress,
-    alert,
     isPlayerAlreadyRegistered,
     getPlayerInfo,
-    setShowAlert: handleAlert,
   };
   return <EthereumContext.Provider value={value}>{children}</EthereumContext.Provider>;
 };

@@ -1,5 +1,6 @@
 export const ROUTES = Object.freeze({
   HOME: '/',
-  BATTLE: 'battle',
+  ARENA: 'arena',
   CREATE: 'create',
+  JOIN: 'join',
 });

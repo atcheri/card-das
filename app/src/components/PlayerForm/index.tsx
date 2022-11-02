@@ -6,11 +6,13 @@ import ActivateWalletInfo from '../ActivateWalletInfo';
 import PrimaryButton from '../buttons/PrimaryButton';
 import { validateName } from '../../utils/validators';
 import * as styles from '../../styles';
+import useAlertContext from '../../hooks/useAlertContext';
 
 type PlayerFormProps = {};
 
 const PlayerForm: FC<PlayerFormProps> = () => {
-  const { contract, walletAddress, isPlayerAlreadyRegistered, setShowAlert } = useEthContext();
+  const { setAlert } = useAlertContext();
+  const { contract, walletAddress, isPlayerAlreadyRegistered } = useEthContext();
   const [playerName, setPlayerName] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -31,7 +33,7 @@ const PlayerForm: FC<PlayerFormProps> = () => {
     try {
       const isPlayerRegistered = await isPlayerAlreadyRegistered(walletAddress);
       if (isPlayerRegistered) {
-        setShowAlert({
+        setAlert({
           status: true,
           type: 'warning',
           message: `Player "${playerName}" already exists in the colysée.`,
@@ -40,13 +42,13 @@ const PlayerForm: FC<PlayerFormProps> = () => {
       }
 
       await contract.registerPlayer(playerName, `${playerName}_token`);
-      setShowAlert({
+      setAlert({
         status: true,
         type: 'success',
         message: `Player "${playerName}" entered colysée.`,
       });
     } catch (error) {
-      setShowAlert({
+      setAlert({
         status: true,
         type: 'error',
         message: 'Something went wrong!',
