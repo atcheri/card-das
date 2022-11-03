@@ -1,7 +1,6 @@
 import { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react';
 
 import PrimaryButton from '../../components/buttons/PrimaryButton';
-import useAlertContext from '../../hooks/useAlertContext';
 import useArenaContext from '../../hooks/useArenaContext';
 import { validateName } from '../../utils/validators';
 import ArenaWaitingRoom from './ArenaWaitingRoom';
@@ -10,8 +9,7 @@ import * as styles from '../../styles';
 type CreateArenaFormProps = {};
 
 const CreateArenaForm: FC<CreateArenaFormProps> = () => {
-  const { setAlert } = useAlertContext();
-  const { arena, createArena, isWaiting } = useArenaContext();
+  const { createArena, isWaiting } = useArenaContext();
 
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
@@ -28,9 +26,9 @@ const CreateArenaForm: FC<CreateArenaFormProps> = () => {
     try {
       setLoading(true);
       await createArena(name);
-      setAlert({ status: true, type: 'success', message: `The arena ${name} has succesfully been created.` });
+      console.log({ status: true, type: 'success', message: `The arena ${name} has succesfully been created.` });
     } catch (error) {
-      setAlert({
+      console.log({
         status: true,
         type: 'error',
         message: `There was an error while creating your arena ${name}. Try again later.`,

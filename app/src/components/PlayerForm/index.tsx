@@ -1,18 +1,16 @@
-import { ChangeEvent, FC, FormEvent, useState } from 'react';
+import { ChangeEvent, FC, FormEvent, useContext, useState } from 'react';
 
 import useEthContext from '../../hooks/useEthContext';
-import { isNotEthereum } from '../../utils/ethereum';
-import ActivateWalletInfo from '../ActivateWalletInfo';
 import PrimaryButton from '../buttons/PrimaryButton';
 import { validateName } from '../../utils/validators';
 import * as styles from '../../styles';
-import useAlertContext from '../../hooks/useAlertContext';
+import { InitEthereumContext } from '../../contexts/initEthContext';
 
 type PlayerFormProps = {};
 
 const PlayerForm: FC<PlayerFormProps> = () => {
-  const { setAlert } = useAlertContext();
-  const { contract, walletAddress, isPlayerAlreadyRegistered } = useEthContext();
+  const { contract } = useContext(InitEthereumContext);
+  const { walletAddress, isPlayerAlreadyRegistered } = useEthContext();
   const [playerName, setPlayerName] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -33,22 +31,18 @@ const PlayerForm: FC<PlayerFormProps> = () => {
     try {
       const isPlayerRegistered = await isPlayerAlreadyRegistered(walletAddress);
       if (isPlayerRegistered) {
-        setAlert({
-          status: true,
-          type: 'warning',
-          message: `Player "${playerName}" already exists in the colysée.`,
-        });
+        console.log('player already registered', walletAddress);
         return;
       }
 
       await contract.registerPlayer(playerName, `${playerName}_token`);
-      setAlert({
+      console.log({
         status: true,
         type: 'success',
         message: `Player "${playerName}" entered colysée.`,
       });
     } catch (error) {
-      setAlert({
+      console.warn({
         status: true,
         type: 'error',
         message: 'Something went wrong!',
@@ -57,10 +51,6 @@ const PlayerForm: FC<PlayerFormProps> = () => {
       setLoading(false);
     }
   };
-
-  if (isNotEthereum()) {
-    return <ActivateWalletInfo />;
-  }
 
   return (
     <form className="flex flex-col" onSubmit={handleSubmit}>
