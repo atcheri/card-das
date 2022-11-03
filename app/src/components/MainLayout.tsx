@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { Outlet } from 'react-router-dom';
 
-import Alert from './Alert';
 import Footer from './Footer';
 import MainHeader from './Headers/MainHeader';
 
@@ -12,7 +11,6 @@ const body = 'flex flex-1 justify-center flex-col space-y-10 xl:mt-0 my-16';
 const MainLayout: FC = () => {
   return (
     <>
-      <Alert />
       <div className={container}>
         <MainHeader />
         <main className={content}>
