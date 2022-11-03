@@ -1,3 +1,4 @@
+export { AvalancheIcon } from './AvalancheIcon';
 export { MetamaskIcon } from './MetamaskIcon';
 export { CoreIcon } from './CoreIcon';
 export { CoinbaseIcon } from './CoinbaseIcon';
