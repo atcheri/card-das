@@ -1,8 +1,9 @@
 import { ethers } from 'ethers';
-import { createContext, FC, PropsWithChildren, useEffect, useState } from 'react';
+import { createContext, FC, PropsWithChildren, useContext, useEffect, useState } from 'react';
 
 import useEthContext from '../hooks/useEthContext';
 import { Arena, ArenaStatus, Player } from '../types';
+import { InitEthereumContext } from './initEthContext';
 
 type ArenaContextProps = {
   isWaiting: boolean;
@@ -42,9 +43,10 @@ const toArena = (data: any): Arena => {
 };
 
 export const ArenaContextProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
+  const { contract } = useContext(InitEthereumContext);
   const [isWaiting, setIsWaiting] = useState(false);
   const [arena, setArena] = useState<Arena>(initialArena);
-  const { contract, player } = useEthContext();
+  const { player } = useEthContext();
 
   const loadUserArenas = async (c: ethers.Contract, p: Player): Promise<Arena[]> => {
     const arenas = (await c.getAllBattles()).slice(1).filter(filterUserArena(p.address)).map(toArena);

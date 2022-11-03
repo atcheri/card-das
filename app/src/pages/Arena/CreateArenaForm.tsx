@@ -4,6 +4,8 @@ import PrimaryButton from '../../components/buttons/PrimaryButton';
 import useArenaContext from '../../hooks/useArenaContext';
 import { validateName } from '../../utils/validators';
 import ArenaWaitingRoom from './ArenaWaitingRoom';
+import { arenaCreated, thereWasAnError } from '../../utils/toasters';
+
 import * as styles from '../../styles';
 
 type CreateArenaFormProps = {};
@@ -26,13 +28,9 @@ const CreateArenaForm: FC<CreateArenaFormProps> = () => {
     try {
       setLoading(true);
       await createArena(name);
-      console.log({ status: true, type: 'success', message: `The arena ${name} has succesfully been created.` });
+      arenaCreated(name);
     } catch (error) {
-      console.log({
-        status: true,
-        type: 'error',
-        message: `There was an error while creating your arena ${name}. Try again later.`,
-      });
+      thereWasAnError(`There was an error while creating your arena ${name}. Try again later.`);
     } finally {
       setLoading(false);
     }

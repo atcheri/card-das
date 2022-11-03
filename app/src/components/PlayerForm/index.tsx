@@ -5,6 +5,7 @@ import PrimaryButton from '../buttons/PrimaryButton';
 import { validateName } from '../../utils/validators';
 import * as styles from '../../styles';
 import { InitEthereumContext } from '../../contexts/initEthContext';
+import { thereWasAnError } from '../../utils/toasters';
 
 type PlayerFormProps = {};
 
@@ -36,17 +37,9 @@ const PlayerForm: FC<PlayerFormProps> = () => {
       }
 
       await contract.registerPlayer(playerName, `${playerName}_token`);
-      console.log({
-        status: true,
-        type: 'success',
-        message: `Player "${playerName}" entered colysée.`,
-      });
     } catch (error) {
-      console.warn({
-        status: true,
-        type: 'error',
-        message: 'Something went wrong!',
-      });
+      console.error('Player creation error:', error);
+      thereWasAnError();
     } finally {
       setLoading(false);
     }
