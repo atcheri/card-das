@@ -11,7 +11,7 @@ export const CoinbaseIcon: FC<BaseIconProps> = ({ height = 224.6, width = 229.9 
       x="0px"
       y="0px"
       viewBox="0 0 229.9 224.6"
-      enable-background="new 0 0 229.9 224.6"
+      enableBackground="new 0 0 229.9 224.6"
       xmlSpace="preserve"
       height={height}
       width={width}>
@@ -22,7 +22,7 @@ export const CoinbaseIcon: FC<BaseIconProps> = ({ height = 224.6, width = 229.9 
         <clipPath id="SVGID_00000062887587086908562510000010617487858763716745_">
           <use xlinkHref="#SVGID_1_" overflow="visible" />
         </clipPath>
-        <g clip-path="url(#SVGID_00000062887587086908562510000010617487858763716745_)">
+        <g clipPath="url(#SVGID_00000062887587086908562510000010617487858763716745_)">
           <path
             fill="#0052FF"
             d="M46.4,195c-8.4,0-14.9,6.3-14.9,14.8c0,8.5,6.4,14.8,14.9,14.8c8.5,0,15-6.4,15-14.8
