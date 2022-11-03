@@ -4,4 +4,6 @@ export const ROUTES = Object.freeze({
   COLYSEUM: 'colyseum',
   CREATE: 'create',
   JOIN: 'join',
+  STAGE: 'stage',
+  WAITING_ROOM: 'waiting-room',
 });

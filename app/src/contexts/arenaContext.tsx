@@ -1,9 +1,9 @@
-import { ethers } from 'ethers';
 import { createContext, FC, PropsWithChildren, useEffect, useState } from 'react';
 
 import useContractContext from '../hooks/useContractContext';
 import useEthContext from '../hooks/useEthContext';
-import { Arena, ArenaStatus, Player } from '../types';
+import { Arena, ArenaStatus } from '../types';
+import { loadPendingArenas, loadUserArenas } from '../utils/ethereum';
 
 type ArenaContextProps = {
   isWaiting: boolean;
@@ -23,40 +23,11 @@ const initialArena: Arena = {
   winner: '',
 };
 
-const filterUserArena =
-  (address: string) =>
-  (arena: Arena): boolean => {
-    return arena.players.map((name) => name.toLowerCase()).includes(address.toLowerCase());
-  };
-
-const filterPendingArena = (arena: Arena): boolean => arena.status === ArenaStatus.PENDING;
-
-const toArena = (data: any): Arena => {
-  return {
-    status: data.battleStatus,
-    hash: data.battleHash,
-    name: data.name,
-    players: data.players,
-    moves: data.moves,
-    winner: data.winner,
-  };
-};
-
 export const ArenaContextProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
   const { contract } = useContractContext();
   const [isWaiting, setIsWaiting] = useState(false);
   const [arena, setArena] = useState<Arena>(initialArena);
   const { player } = useEthContext();
-
-  const loadUserArenas = async (c: ethers.Contract, p: Player): Promise<Arena[]> => {
-    const arenas = (await c.getAllBattles()).slice(1).filter(filterUserArena(p.address)).map(toArena);
-    return arenas;
-  };
-
-  const loadPendingArenas = async (c: ethers.Contract, p: Player): Promise<Arena[]> => {
-    const arenas = (await loadUserArenas(c, p)).filter(filterPendingArena).map(toArena);
-    return arenas;
-  };
 
   useEffect(() => {
     if (!contract || !player) {
@@ -91,7 +62,7 @@ export const ArenaContextProvider: FC<PropsWithChildren<{}>> = ({ children }) =>
     if (!contract || !player) {
       return [];
     }
-    return loadPendingArenas(contract, player);
+    return loadPendingArenas(contract);
   };
 
   const value: ArenaContextProps = { isWaiting, arena, createArena, getPendingArenas };

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import DefaultButton from '../../../components/buttons/DefaultButton';
 import useEthContext from '../../../hooks/useEthContext';
@@ -49,6 +49,10 @@ const ArenaWaitingRoom: FC = () => {
             <WaitingChallenger address={openent.address}></WaitingChallenger>
           </div>
         )}
+        <p className="font-omega text-2xl my-20">OR</p>
+        <Link to={`/${ROUTES.ARENA}/${ROUTES.JOIN}`} className="text-siteBlue">
+          Join another <span className="font-omega">Arena</span>
+        </Link>
       </div>
     </div>
   );
