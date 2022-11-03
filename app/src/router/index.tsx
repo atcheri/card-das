@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { ROUTES } from './constants';
+import NotFound from '../pages/NotFound';
 import MainLayout from '../components/MainLayout';
 import Restricted from '../components/Restricted';
 import Landing from '../pages/Landing';
@@ -22,6 +23,7 @@ const Router: FC = () => {
             <Route path={`${ROUTES.WAITING_ROOM}/:name`} element={<WaitingRoom />} />
             <Route path={`${ROUTES.STAGE}/:name`} element={<Stage />} />
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>
