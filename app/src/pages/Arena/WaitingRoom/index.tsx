@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import DefaultButton from '../../../components/buttons/DefaultButton';
 import useEthContext from '../../../hooks/useEthContext';
@@ -10,9 +10,18 @@ import { Player } from '../../../types';
 import * as styles from '../../../styles';
 
 import './styles.scss';
+import useArenaContext from '../../../hooks/useArenaContext';
 
-const ArenaWaitingRoom: FC = () => {
+const WaitingRoom: FC = () => {
+  const { name } = useParams();
+  console.log('name:', name);
+  const { isWaiting } = useArenaContext();
   const { player } = useEthContext();
+
+  if (!isWaiting /* of game is running/finished */) {
+    return null; // maybe just redirect with <Nagivate to/>
+  }
+
   const openent: Player = {
     address: '.............',
     name: 'Random name',
@@ -58,4 +67,4 @@ const ArenaWaitingRoom: FC = () => {
   );
 };
 
-export default ArenaWaitingRoom;
+export default WaitingRoom;

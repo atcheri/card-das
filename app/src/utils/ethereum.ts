@@ -48,6 +48,6 @@ export const loadPendingArenas = async (c: ethers.Contract): Promise<Arena[]> =>
 };
 
 export const loadUserArenas = async (c: ethers.Contract, p: Player): Promise<Arena[]> => {
-  const arenas = (await loadPendingArenas(c)).filter(filterUserArena(p.address)).map(toArena);
+  const arenas = (await loadPendingArenas(c)).map(toArena).filter(filterUserArena(p.address));
   return arenas;
 };

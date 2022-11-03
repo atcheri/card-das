@@ -1,17 +1,19 @@
-import { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FC, FormEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import PrimaryButton from '../../components/buttons/PrimaryButton';
 import useArenaContext from '../../hooks/useArenaContext';
 import { validateName } from '../../utils/validators';
-import ArenaWaitingRoom from './ArenaWaitingRoom';
 import { arenaCreated, thereWasAnError } from '../../utils/toasters';
+import { ROUTES } from '../../router/constants';
 
 import * as styles from '../../styles';
 
 type CreateArenaFormProps = {};
 
 const CreateArenaForm: FC<CreateArenaFormProps> = () => {
-  const { createArena, isWaiting } = useArenaContext();
+  const navigate = useNavigate();
+  const { createArena } = useArenaContext();
 
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
@@ -29,6 +31,7 @@ const CreateArenaForm: FC<CreateArenaFormProps> = () => {
       setLoading(true);
       await createArena(name);
       arenaCreated(name);
+      navigate(`/${ROUTES.ARENA}/${ROUTES.WAITING_ROOM}/${name}`);
     } catch (error) {
       thereWasAnError(`There was an error while creating your arena ${name}. Try again later.`);
     } finally {
@@ -38,7 +41,6 @@ const CreateArenaForm: FC<CreateArenaFormProps> = () => {
 
   return (
     <>
-      {isWaiting && <ArenaWaitingRoom />}
       <form className="flex flex-col" onSubmit={handleSubmit}>
         <label htmlFor="arena-name" className={styles.label}>
           Enter your <span className="font-omega">ARENA NAME</span>
