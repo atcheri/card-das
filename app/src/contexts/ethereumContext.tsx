@@ -1,11 +1,11 @@
-import { createContext, FC, PropsWithChildren, useContext, useEffect, useState } from 'react';
+import { createContext, FC, PropsWithChildren, useEffect, useState } from 'react';
 import { Result } from 'ethers/lib/utils';
 
 import { getPlayerInfo, isEthereum, isNotEthereum } from '../utils/ethereum';
 import { createNewPlayerEventHandler } from '../events/createPlayerEvent';
 import { Player } from '../types';
-import { InitEthereumContext } from './initEthContext';
 import { playerCreated } from '../utils/toasters';
+import useContractContext from '../hooks/useContractContext';
 
 type EthereumContextProps = {
   checkingPlayer: boolean;
@@ -17,7 +17,7 @@ type EthereumContextProps = {
 export const EthereumContext = createContext({} as EthereumContextProps);
 
 export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
-  const { contract, provider } = useContext(InitEthereumContext);
+  const { contract, provider } = useContractContext();
   const [checkingPlayer, setCheckingPlayer] = useState(() => isEthereum());
   const [player, setPlayer] = useState<Player | null>(null);
   const [walletAddress, setWalletAddress] = useState('');

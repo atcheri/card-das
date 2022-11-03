@@ -4,14 +4,14 @@ import Web3Modal from 'web3modal';
 
 import { ABI, ADDRESS } from '../contract';
 
-type InitEthereumContextProps = {
+type ContractContextProps = {
   contract: ethers.Contract;
   provider: ethers.providers.Web3Provider;
 };
 
-export const InitEthereumContext = createContext({} as InitEthereumContextProps);
+export const ContractContext = createContext({} as ContractContextProps);
 
-export const InitEthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
+export const ContractContextProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
   const [loaded, isLoaded] = useState(false);
   const [contract, setContract] = useState<ethers.Contract>();
   const [provider, setProvider] = useState<ethers.providers.Web3Provider>();
@@ -40,9 +40,9 @@ export const InitEthereumContextProvider: FC<PropsWithChildren<{}>> = ({ childre
     initContractAndProvider();
   }, []);
 
-  const value: InitEthereumContextProps = {
+  const value: ContractContextProps = {
     contract: contract!,
     provider: provider!,
   };
-  return <InitEthereumContext.Provider value={value}>{children}</InitEthereumContext.Provider>;
+  return <ContractContext.Provider value={value}>{children}</ContractContext.Provider>;
 };

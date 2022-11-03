@@ -1,16 +1,17 @@
-import { ChangeEvent, FC, FormEvent, useContext, useState } from 'react';
+import { ChangeEvent, FC, FormEvent, useState } from 'react';
 
 import useEthContext from '../../hooks/useEthContext';
 import PrimaryButton from '../buttons/PrimaryButton';
 import { validateName } from '../../utils/validators';
-import * as styles from '../../styles';
-import { InitEthereumContext } from '../../contexts/initEthContext';
 import { thereWasAnError } from '../../utils/toasters';
+import useContractContext from '../../hooks/useContractContext';
+
+import * as styles from '../../styles';
 
 type PlayerFormProps = {};
 
 const PlayerForm: FC<PlayerFormProps> = () => {
-  const { contract } = useContext(InitEthereumContext);
+  const { contract } = useContractContext();
   const { walletAddress, isPlayerAlreadyRegistered } = useEthContext();
   const [playerName, setPlayerName] = useState('');
   const [loading, setLoading] = useState(false);
