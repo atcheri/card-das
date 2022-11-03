@@ -8,6 +8,7 @@ import Landing from '../pages/Landing';
 import CreateArena from '../pages/Arena/CreateArena';
 import JoinArena from '../pages/Arena/JoinArena';
 import WaitingRoom from '../pages/Arena/WaitingRoom';
+import Stage from '../pages/Arena/Stage';
 
 const Router: FC = () => {
   return (
@@ -19,6 +20,7 @@ const Router: FC = () => {
             <Route path={ROUTES.CREATE} element={<CreateArena />} />
             <Route path={ROUTES.JOIN} element={<JoinArena />} />
             <Route path={`${ROUTES.WAITING_ROOM}/:name`} element={<WaitingRoom />} />
+            <Route path={`${ROUTES.STAGE}/:name`} element={<Stage />} />
           </Route>
         </Route>
       </Routes>
