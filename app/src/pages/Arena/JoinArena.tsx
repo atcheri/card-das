@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import PrimaryButton from '../../components/buttons/PrimaryButton';
 import HeaderOne from '../../components/Headers/HeaderOne';
 import useContractContext from '../../hooks/useContractContext';
+import useEthContext from '../../hooks/useEthContext';
 import { ROUTES } from '../../router/constants';
 import { Arena } from '../../types';
 import { loadPendingArenas } from '../../utils/ethereum';
@@ -13,6 +14,7 @@ import * as styles from '../../styles';
 
 const JoinArena: FC = () => {
   const { contract } = useContractContext();
+  const { walletAddress } = useEthContext();
   const [pendindArenas, setPendingArenas] = useState<Arena[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -21,16 +23,17 @@ const JoinArena: FC = () => {
       return;
     }
     setLoading(true);
-    const load = async () => {
+    (async () => {
       try {
-        const arenas = await loadPendingArenas(contract);
+        const arenas = await (
+          await loadPendingArenas(contract)
+        ).filter((a) => !a.players.map((p) => p.toLowerCase()).includes(walletAddress));
         setPendingArenas(arenas);
       } catch (error) {
       } finally {
         setLoading(false);
       }
-    };
-    load();
+    })();
   }, [contract]);
 
   return (

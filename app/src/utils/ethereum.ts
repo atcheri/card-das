@@ -42,6 +42,20 @@ export const getPlayerInfo = async (contract: ethers.Contract, address: string):
   };
 };
 
+export const loadArena = async (c: ethers.Contract, name: string): Promise<Arena> => {
+  const arena = (await c.getAllBattles())
+    .slice(1)
+    .map(toArena)
+    .filter((a: Arena) => a.name === name)
+    .pop();
+
+  if (!arena) {
+    throw Error(`Arena ${name} not found.`);
+  }
+
+  return arena;
+};
+
 export const loadPendingArenas = async (c: ethers.Contract): Promise<Arena[]> => {
   const arenas = (await c.getAllBattles()).slice(1).map(toArena).filter(filterPendingArena);
   return arenas;

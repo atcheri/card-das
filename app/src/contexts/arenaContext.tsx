@@ -3,12 +3,13 @@ import { createContext, FC, PropsWithChildren, useEffect, useState } from 'react
 import useContractContext from '../hooks/useContractContext';
 import useEthContext from '../hooks/useEthContext';
 import { Arena, ArenaStatus } from '../types';
-import { loadPendingArenas, loadUserArenas } from '../utils/ethereum';
+import { loadArena, loadPendingArenas, loadUserArenas } from '../utils/ethereum';
 
 type ArenaContextProps = {
   isWaiting: boolean;
   arena: Arena;
   createArena: (arenaName: string) => void;
+  getPendingArena: (name: string) => Promise<Arena | null>;
   getPendingArenas: () => Promise<Arena[]>;
 };
 
@@ -65,7 +66,14 @@ export const ArenaContextProvider: FC<PropsWithChildren<{}>> = ({ children }) =>
     return loadPendingArenas(contract);
   };
 
-  const value: ArenaContextProps = { isWaiting, arena, createArena, getPendingArenas };
+  const getPendingArena = async (name: string): Promise<Arena | null> => {
+    if (!contract || !player) {
+      return null;
+    }
+    return loadArena(contract, name);
+  };
+
+  const value: ArenaContextProps = { isWaiting, arena, createArena, getPendingArena, getPendingArenas };
 
   return <ArenaContext.Provider value={value}>{children}</ArenaContext.Provider>;
 };

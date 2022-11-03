@@ -1,25 +1,49 @@
-import { FC } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { FC, useEffect, useState } from 'react';
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 
 import DefaultButton from '../../../components/buttons/DefaultButton';
 import useEthContext from '../../../hooks/useEthContext';
+import useArenaContext from '../../../hooks/useArenaContext';
 import { ROUTES } from '../../../router/constants';
 import WaitingChallenger from '../WaitingChallenger';
-import { Player } from '../../../types';
+import { Arena, ArenaStatus, Player } from '../../../types';
+import Loader from '../../../components/Loader';
+import { thereWasAnError } from '../../../utils/toasters';
 
 import * as styles from '../../../styles';
 
 import './styles.scss';
-import useArenaContext from '../../../hooks/useArenaContext';
 
 const WaitingRoom: FC = () => {
   const { name } = useParams();
-  console.log('name:', name);
-  const { isWaiting } = useArenaContext();
+  const navigate = useNavigate();
+  const { getPendingArena } = useArenaContext();
   const { player } = useEthContext();
+  const [arena, setArena] = useState<Arena | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  if (!isWaiting /* of game is running/finished */) {
-    return null; // maybe just redirect with <Nagivate to/>
+  useEffect(() => {
+    if (!name) {
+      return;
+    }
+    (async () => {
+      try {
+        const arena = await getPendingArena(name);
+        setArena(arena);
+      } catch (error) {
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
+
+  if (loading) {
+    return <Loader text={`Please wait while loading Arena ${name} data`} />;
+  }
+
+  if (!arena || arena.status !== ArenaStatus.PENDING) {
+    thereWasAnError('Cannot join a closed Arena. Try to join another one.');
+    return <Navigate to={`/${ROUTES.ARENA}/${ROUTES.JOIN}`} />;
   }
 
   const openent: Player = {
@@ -29,7 +53,6 @@ const WaitingRoom: FC = () => {
     mana: 10,
     inBattle: false,
   };
-  const navigate = useNavigate();
 
   return (
     <div className={`text-white ${styles.flexCenteredBetween} ${styles.arenaWaitingRoomContainer}`}>
