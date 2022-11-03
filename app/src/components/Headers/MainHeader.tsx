@@ -12,7 +12,7 @@ const logoPath = '/assets/knight-gundam-bb.png';
 type MainHeaderProps = {};
 
 const MainHeader: FC<MainHeaderProps> = () => {
-  const { checkingPlayer, player } = useEthContext();
+  const { checkingPlayer, walletAddress } = useEthContext();
 
   return (
     <nav className="flex items-center justify-between text-white">
@@ -20,7 +20,7 @@ const MainHeader: FC<MainHeaderProps> = () => {
         <img src={logoPath} alt="card-das-online-game-logo" className={logo} />
         <span className="font-omega text-white text-2xl">CARD - DAS</span>
       </Link>
-      {checkingPlayer ? <InfinitySpin width="100" color="#0E79B2" /> : <UserInfo />}
+      {checkingPlayer ? <InfinitySpin width="100" color="#0E79B2" /> : <UserInfo address={walletAddress} />}
     </nav>
   );
 };
