@@ -18,7 +18,7 @@ const PlayerForm: FC<PlayerFormProps> = () => {
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    if (validateName(value)) {
+    if (validateName(value) || value === '') {
       setPlayerName(value);
     }
   };
@@ -26,6 +26,10 @@ const PlayerForm: FC<PlayerFormProps> = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!contract) {
+      return;
+    }
+
+    if (playerName.length < 5) {
       return;
     }
 
@@ -60,7 +64,7 @@ const PlayerForm: FC<PlayerFormProps> = () => {
         placeholder="How should we call you?"
         disabled={loading}
       />
-      <PrimaryButton loading={loading} disabled={loading} extraStyle="my-4" type="submit">
+      <PrimaryButton loading={loading} disabled={loading || !validateName(playerName)} extraStyle="my-4" type="submit">
         Enter the arena
       </PrimaryButton>
     </form>

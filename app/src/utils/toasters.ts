@@ -12,3 +12,5 @@ export const playerCreated = (address: string) => toast.success(`Player successf
 
 export const arenaCreated = (name: string) =>
   toast.success(`The arena ${name} has succesfully been created.`, toastConfig);
+
+export const mustBeRegistered = () => toast.warn('You must become a player to access the arena.', toastConfig);

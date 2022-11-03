@@ -27,7 +27,7 @@ const LandingContent: FC = () => {
 
   if (player) {
     return (
-      <Link to={`${ROUTES.HOME}${ROUTES.ARENA}/${ROUTES.CREATE}`}>
+      <Link to={`${ROUTES.HOME}${ROUTES.ARENA}/${ROUTES.JOIN}`}>
         <PrimaryButton>TO ARENA</PrimaryButton>
       </Link>
     );

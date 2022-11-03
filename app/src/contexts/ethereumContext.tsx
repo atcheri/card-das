@@ -28,7 +28,6 @@ export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children })
     }
 
     try {
-      setCheckingPlayer(true);
       const accounts = await window.ethereum.request({
         method: 'eth_requestAccounts',
       });
@@ -37,8 +36,6 @@ export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children })
       }
     } catch (error) {
       console.log('eth_requestAccounts error:', error);
-    } finally {
-      setCheckingPlayer(false);
     }
   };
 
@@ -70,11 +67,13 @@ export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children })
 
     (async () => {
       try {
+        setCheckingPlayer(true);
         setPlayer(await getPlayerInfo(contract, walletAddress));
       } catch (err) {
-        setCheckingPlayer(false);
         setPlayer(null);
         console.error('getPlayerInfo err:', err);
+      } finally {
+        setCheckingPlayer(false);
       }
     })();
   }, [contract, walletAddress]);
