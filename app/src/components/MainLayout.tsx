@@ -7,8 +7,8 @@ import MainHeader from './Headers/MainHeader';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-const mainContainer = 'min-h-screen flex flex-col relative bg-siteblack';
-const container = 'min-h-screen flex flex-col xl:flex-row relative bg-siteblack';
+const mainContainer = 'min-h-screen flex flex-col bg-siteblack';
+const container = 'flex flex-1 flex-col xl:flex-row relative bg-siteblack';
 const content = 'flex flex-1 justify-between flex-col px-4 sm:px-12 sm:py-6 ';
 const body = 'flex flex-1 justify-center flex-col space-y-10 xl:mt-0 my-16';
 const LandingBackground = '/assets/landing-background.webp';

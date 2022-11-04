@@ -65,3 +65,7 @@ export const loadUserArenas = async (c: ethers.Contract, p: Player): Promise<Are
   const arenas = (await loadPendingArenas(c)).map(toArena).filter(filterUserArena(p.address));
   return arenas;
 };
+
+export const joinArena = async (c: ethers.Contract, a: string): Promise<Arena> => {
+  return c.joinBattle(a);
+};

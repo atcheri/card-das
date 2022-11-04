@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { InfinitySpin } from 'react-loader-spinner';
 import { Link } from 'react-router-dom';
 
-import UserInfo from './UserInfo';
+import PlayerInfo from './PlayerInfo';
 import useEthContext from '../../hooks/useEthContext';
 import { ROUTES } from '../../router/constants';
 
@@ -20,7 +20,7 @@ const MainHeader: FC<MainHeaderProps> = () => {
         <img src={logoPath} alt="card-das-online-game-logo" className={logo} />
         <span className="font-omega text-white text-2xl">CARD - DAS</span>
       </Link>
-      {checkingPlayer ? <InfinitySpin width="100" color="#0E79B2" /> : <UserInfo address={walletAddress} />}
+      {checkingPlayer ? <InfinitySpin width="100" color="#0E79B2" /> : <PlayerInfo address={walletAddress} />}
     </nav>
   );
 };

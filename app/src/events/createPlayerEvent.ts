@@ -3,7 +3,7 @@ import { LogDescription, Result } from 'ethers/lib/utils';
 
 import { ABI } from '../contract';
 
-const AddNewPlayerEvent = (
+const AddNewEvent = (
   event: ethers.EventFilter,
   provider: ethers.providers.Web3Provider,
   cb: (logs: LogDescription) => void,
@@ -32,10 +32,26 @@ export const createNewPlayerEventHandler = ({
   callbackWithResult,
 }: createNewPlayerEventHandlerParams) => {
   const newPlayerEvent = contract.filters.NewPlayer();
-  AddNewPlayerEvent(newPlayerEvent, provider, ({ args }: LogDescription) => {
+  AddNewEvent(newPlayerEvent, provider, ({ args }: LogDescription) => {
     console.log('new player created', args);
 
     if (address === args.owner) {
+      callbackWithResult(args);
+    }
+  });
+};
+
+export const createJoinedArenaEventHandler = ({
+  contract,
+  provider,
+  address,
+  callbackWithResult,
+}: createNewPlayerEventHandlerParams) => {
+  const newBattleEvent = contract.filters.NewBattle();
+  AddNewEvent(newBattleEvent, provider, ({ args }: LogDescription) => {
+    console.log('a player joined an existing arena', args, address);
+
+    if ([args.player1, args.player2].includes(address)) {
       callbackWithResult(args);
     }
   });
