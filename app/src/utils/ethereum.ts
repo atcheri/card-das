@@ -2,11 +2,25 @@ import { ethers } from 'ethers';
 
 import { Arena, ArenaStatus, Player } from '../types';
 
+const isPlayerInArena =
+  (address: string) =>
+  (arena: Arena): boolean =>
+    arena.players.map((name) => name.toLowerCase()).includes(address.toLowerCase());
+
+const isPlayingInArena =
+  (address: string) =>
+  (arena: Arena): boolean =>
+    isPlayerInArena(address)(arena) && arena.status === ArenaStatus.STARTED;
+
+const canPlayerJoinPendingArena =
+  (address: string) =>
+  (arena: Arena): boolean =>
+    !isPlayerInArena(address)(arena) && arena.status === ArenaStatus.PENDING;
+
 const filterUserArena =
   (address: string) =>
-  (arena: Arena): boolean => {
-    return arena.players.map((name) => name.toLowerCase()).includes(address.toLowerCase());
-  };
+  (arena: Arena): boolean =>
+    isPlayerInArena(address)(arena);
 
 const filterPendingArena = (arena: Arena): boolean => arena.status === ArenaStatus.PENDING;
 
@@ -71,3 +85,9 @@ export const loadUserArenas =
 export const joinArena = async (c: ethers.Contract, a: string): Promise<Arena> => {
   return c.joinBattle(a);
 };
+
+export const canPlayerJoinArena =
+  (address: string) =>
+  (arena: Arena): boolean => {
+    return isPlayingInArena(address)(arena) || canPlayerJoinPendingArena(address)(arena);
+  };

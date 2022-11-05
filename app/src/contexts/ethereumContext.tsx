@@ -17,7 +17,7 @@ type EthereumContextProps = {
 export const EthereumContext = createContext({} as EthereumContextProps);
 
 export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
-  const { contract, provider } = useContractContext();
+  const { contract, init, provider } = useContractContext();
   const [checkingPlayer, setCheckingPlayer] = useState(() => isEthereum());
   const [player, setPlayer] = useState<Player | null>(null);
   const [walletAddress, setWalletAddress] = useState('');
@@ -33,6 +33,7 @@ export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children })
       });
       if (!!accounts) {
         setWalletAddress(accounts[0]);
+        init();
       }
     } catch (error) {
       console.log('eth_requestAccounts error:', error);

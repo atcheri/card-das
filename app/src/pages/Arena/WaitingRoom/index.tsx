@@ -6,11 +6,11 @@ import useEthContext from '../../../hooks/useEthContext';
 import useArenaContext from '../../../hooks/useArenaContext';
 import { ROUTES } from '../../../router/constants';
 import WaitingChallenger from '../WaitingChallenger';
-import { Arena, ArenaStatus, Player } from '../../../types';
+import { Arena, Player } from '../../../types';
 import Loader from '../../../components/Loader';
 import { thereWasAnError } from '../../../utils/toasters';
 import useContractContext from '../../../hooks/useContractContext';
-import { getPlayerInfo } from '../../../utils/ethereum';
+import { canPlayerJoinArena, getPlayerInfo } from '../../../utils/ethereum';
 
 import * as styles from '../../../styles';
 
@@ -65,8 +65,9 @@ const WaitingRoom: FC = () => {
     return <Loader text={`Please wait while loading Arena ${name} data`} />;
   }
 
-  if (!arena || arena.status !== ArenaStatus.PENDING) {
-    thereWasAnError('Cannot join a closed Arena. Try to join another one.');
+  const canJoin = arena && player && canPlayerJoinArena(player.address)(arena);
+  if (!canJoin) {
+    thereWasAnError('Cannot join the requsted Arena. Try to join another one.');
     return <Navigate to={`/${ROUTES.ARENA}/${ROUTES.JOIN}`} />;
   }
 

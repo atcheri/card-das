@@ -7,6 +7,7 @@ import { ABI, ADDRESS } from '../contract';
 type ContractContextProps = {
   contract: ethers.Contract;
   provider: ethers.providers.Web3Provider;
+  init: () => void;
 };
 
 export const ContractContext = createContext({} as ContractContextProps);
@@ -20,29 +21,32 @@ export const ContractContextProvider: FC<PropsWithChildren<{}>> = ({ children })
     if (loaded) {
       return;
     }
-    const initContractAndProvider = async () => {
-      try {
-        const web3Modal = new Web3Modal();
-        const connection = await web3Modal.connect();
-        const provider = new ethers.providers.Web3Provider(connection);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(ADDRESS, ABI, signer);
-
-        setProvider(provider);
-        setContract(contract);
-      } catch (error) {
-        console.log('initialization of contract and provider failed:', error);
-      } finally {
-        isLoaded(true);
-      }
-    };
 
     initContractAndProvider();
   }, []);
 
+  const initContractAndProvider = async () => {
+    try {
+      const web3Modal = new Web3Modal();
+      const connection = await web3Modal.connect();
+      const provider = new ethers.providers.Web3Provider(connection);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(ADDRESS, ABI, signer);
+
+      setProvider(provider);
+      setContract(contract);
+      console.info('contract and provider initiliazed');
+    } catch (error) {
+      console.log('initialization of contract and provider failed:', error);
+    } finally {
+      isLoaded(true);
+    }
+  };
+
   const value: ContractContextProps = {
     contract: contract!,
     provider: provider!,
+    init: initContractAndProvider,
   };
   return <ContractContext.Provider value={value}>{children}</ContractContext.Provider>;
 };
