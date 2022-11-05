@@ -6,6 +6,13 @@ export type Player = {
   inBattle: boolean;
 };
 
+export type PlayerGameToken = {
+  id: number;
+  name: string;
+  attack: number;
+  defense: number;
+};
+
 export enum ArenaStatus {
   NULL = -1,
   PENDING,
@@ -26,4 +33,9 @@ export type AlertType = {
   status: boolean;
   type: 'info' | 'success' | 'warning' | 'error';
   message: string;
+};
+
+export type Avatar = {
+  name: string;
+  path: string;
 };

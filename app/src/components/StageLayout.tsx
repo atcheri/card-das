@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
 import MainHeader from './Headers/MainHeader';
+import Footer from './Footer';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -20,6 +21,7 @@ const StageLayout: FC = () => {
           <Outlet />
         </main>
       </div>
+      <Footer />
     </>
   );
 };

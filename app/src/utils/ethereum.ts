@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 
-import { Arena, ArenaStatus, Player } from '../types';
+import { Arena, ArenaStatus, Player, PlayerGameToken } from '../types';
 
 const isPlayerInArena =
   (address: string) =>
@@ -24,6 +24,25 @@ const filterUserArena =
 
 const filterPendingArena = (arena: Arena): boolean => arena.status === ArenaStatus.PENDING;
 
+const toPlayer = (data: any): Player => {
+  return {
+    address: data.playerAddress,
+    name: data.playerName,
+    mana: data.playerMana.toNumber(),
+    health: data.playerHealth.toNumber(),
+    inBattle: data.inBattle,
+  };
+};
+
+const toGameToken = (data: any): PlayerGameToken => {
+  return {
+    id: data.id,
+    name: data.name,
+    attack: data.attackStrength.toNumber(),
+    defense: data.defenseStrength.toNumber(),
+  };
+};
+
 const toArena = (data: any): Arena => {
   return {
     status: data.battleStatus,
@@ -45,15 +64,21 @@ export const getPlayerInfo = async (contract: ethers.Contract, address: string):
   if (!contract) {
     throw Error('No contract defined to get Player information');
   }
+  if (!address) {
+    throw Error('cannot look for player info without any defined address');
+  }
 
   const player = await contract.getPlayer(address);
-  return {
-    address: player.playerAddress,
-    name: player.playerName,
-    mana: player.playerMana.toNumber(),
-    health: player.playerHealth.toNumber(),
-    inBattle: player.inBattle,
-  };
+  return toPlayer(player);
+};
+
+export const getPlayerGameToken = async (contract: ethers.Contract, address: string): Promise<PlayerGameToken> => {
+  if (!contract) {
+    throw Error('No contract defined to get Player game token');
+  }
+
+  const token = await contract.getPlayerToken(address);
+  return toGameToken(token);
 };
 
 export const loadArena = async (c: ethers.Contract, name: string): Promise<Arena> => {
@@ -91,3 +116,11 @@ export const canPlayerJoinArena =
   (arena: Arena): boolean => {
     return isPlayingInArena(address)(arena) || canPlayerJoinPendingArena(address)(arena);
   };
+
+export const findOpenentAddress =
+  (address: string) =>
+  (arena: Arena): string =>
+    arena.players
+      .map((name) => name.toLowerCase())
+      .filter((a) => a !== address)
+      .shift() || '';

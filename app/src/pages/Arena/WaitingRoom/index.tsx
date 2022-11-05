@@ -11,6 +11,7 @@ import Loader from '../../../components/Loader';
 import { thereWasAnError } from '../../../utils/toasters';
 import useContractContext from '../../../hooks/useContractContext';
 import { canPlayerJoinArena, getPlayerInfo } from '../../../utils/ethereum';
+import usePendingArena from '../../../hooks/usePendingArena';
 
 import * as styles from '../../../styles';
 
@@ -27,28 +28,12 @@ const anynomouPlayer: Player = {
 const WaitingRoom: FC = () => {
   const { name } = useParams();
   const navigate = useNavigate();
-  const { getPendingArena, joinPendingArena } = useArenaContext();
+  const { joinPendingArena } = useArenaContext();
+  const { arena, loading } = usePendingArena(name!);
   const { player } = useEthContext();
   const { contract } = useContractContext();
-  const [arena, setArena] = useState<Arena | null>(null);
   const [creator, setCreator] = useState<Player>(anynomouPlayer);
-  const [loading, setLoading] = useState(true);
   const [joining, setJoining] = useState(false);
-
-  useEffect(() => {
-    if (!name) {
-      return;
-    }
-    (async () => {
-      try {
-        const arena = await getPendingArena(name);
-        setArena(arena);
-      } catch (error) {
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
 
   useEffect(() => {
     if (!arena || !contract) {
