@@ -56,15 +56,17 @@ export const loadArena = async (c: ethers.Contract, name: string): Promise<Arena
   return arena;
 };
 
+const loadAllArenas = async (c: ethers.Contract): Promise<Arena[]> => (await c.getAllBattles()).slice(1).map(toArena);
+
 export const loadPendingArenas = async (c: ethers.Contract): Promise<Arena[]> => {
-  const arenas = (await c.getAllBattles()).slice(1).map(toArena).filter(filterPendingArena);
+  const arenas = (await loadAllArenas(c)).filter(filterPendingArena);
   return arenas;
 };
 
-export const loadUserArenas = async (c: ethers.Contract, p: Player): Promise<Arena[]> => {
-  const arenas = (await loadPendingArenas(c)).map(toArena).filter(filterUserArena(p.address));
-  return arenas;
-};
+export const loadUserArenas =
+  (p: Player) =>
+  async (c: ethers.Contract): Promise<Arena[]> =>
+    (await loadAllArenas(c)).filter(filterUserArena(p.address));
 
 export const joinArena = async (c: ethers.Contract, a: string): Promise<Arena> => {
   return c.joinBattle(a);

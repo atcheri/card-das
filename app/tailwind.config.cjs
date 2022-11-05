@@ -13,6 +13,10 @@ module.exports = {
         siteViolet: '#5F4B66',
         siteWhite: '#9eacc7',
       },
+      backgroundImage: {
+        spaceBattleships: "url('/assets/stages/space-battleships.jpeg')",
+        spaceSatellites: "url('/assets/stages/space-satellites.jpeg')",
+      },
       fontFamily: {
         gundam: ['Plavsky Condensed', 'sans-serif'],
         omega: ['omega-centauri-Medium', 'sans-serif'],

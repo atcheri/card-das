@@ -37,7 +37,7 @@ export const ArenaContextProvider: FC<PropsWithChildren<{}>> = ({ children }) =>
     }
 
     const loadOnContractChange = async () => {
-      const arenas = await loadUserArenas(contract, player);
+      const arenas = await loadUserArenas(player)(contract);
       const firstArena = arenas.filter((a) => a.status === ArenaStatus.PENDING || ArenaStatus.STARTED).shift();
       !!firstArena ? setArena(firstArena) : setArena(initialArena);
     };
