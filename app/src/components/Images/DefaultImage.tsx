@@ -11,7 +11,7 @@ const DefaultImage: FC<DefaultImageProps> = ({ path, size = 'sm', className, ...
   const px = sizes[size];
   const sizeClass = `w-${px} h-${px}`; // max-sm:w-${responsivePx} max-sm:h-${responsivePx}
 
-  return <img src={path} {...rest} className={`${sizeClass} ${className}`} />;
+  return <img src={path} className={`${sizeClass} ${className ? className : ''}`} />;
 };
 
 export default DefaultImage;
