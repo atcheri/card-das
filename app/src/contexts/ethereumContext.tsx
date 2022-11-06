@@ -41,6 +41,9 @@ export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children })
   };
 
   useEffect(() => {
+    if (isNotEthereum()) {
+      return;
+    }
     updateWalletAddress();
     window.ethereum.on('accountsChanged', updateWalletAddress);
   }, []);
