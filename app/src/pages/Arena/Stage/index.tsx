@@ -13,18 +13,9 @@ import { thereWasAnError } from '../../../utils/toasters';
 import AvatarImage from '../../../components/Images/AvatarImage';
 import DefaultImage from '../../../components/Images/DefaultImage';
 import { randomBackground } from '../../../utils/images';
+import CardDas from '../../../components/CardDas';
 
 import * as styles from '../../../styles';
-
-const playerContainer = `${styles.flexCenteredCentered} flex-col p-16 gap-2`;
-
-const AttackButton: FC<{ path: string; size: 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' }> = ({ path, size }) => {
-  return (
-    <button className="bg-slate-300 bg-opacity-80 border-2 border-siteBlue duration-300 transform hover:translate-y-1 rounded-md">
-      <DefaultImage path={path} size={size} />
-    </button>
-  );
-};
 
 const Stage: FC = () => {
   const { name } = useParams();
@@ -73,21 +64,9 @@ const Stage: FC = () => {
       {!!player && !!oponent && (
         <div className="grow flex justify-center">
           <div className="grow flex max-sm:flex-col justify-between sm:max-w-6xl">
-            <div className={playerContainer}>
-              <AvatarImage address={player.address} size="md" />
-              <span>{player.name}</span>
-              <AttackButton path="/assets/double-beam-rifle-up.png" size="xxs" />
-              <ProgressBar color="green-400" current={50} max={100} />
-              <ProgressBar color="siteBlue" current={24} max={25} />
-            </div>
+            <CardDas player={player} />
             <div className={`${styles.flexCenteredCentered} p-16`}>VS</div>
-            <div className={playerContainer}>
-              <AvatarImage address={oponent.address} size="md" />
-              <span>{oponent.name}</span>
-              <AttackButton path="/assets/double-beam-rifle-down.png" size="xxs" />
-              <ProgressBar color="green-400" current={50} max={100} />
-              <ProgressBar color="siteBlue" current={24} max={25} />
-            </div>
+            <CardDas player={oponent} />
           </div>
         </div>
       )}

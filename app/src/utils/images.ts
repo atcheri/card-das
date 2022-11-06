@@ -1,7 +1,7 @@
 import { Avatar } from '../types';
 
 const randomItem = <T>(slice: T[]): T => {
-  const i = Math.floor(Math.random() * (slice.length - 1));
+  const i = Math.floor(Math.random() * slice.length);
   return slice[i];
 };
 
