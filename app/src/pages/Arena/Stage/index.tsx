@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 
+import ProgressBar from './ProgressBar';
 import Loader from '../../../components/Loader';
 import useContractContext from '../../../hooks/useContractContext';
 import useEthContext from '../../../hooks/useEthContext';
@@ -9,12 +10,21 @@ import { ROUTES } from '../../../router/constants';
 import { Player, PlayerGameToken } from '../../../types';
 import { findOpenentAddress, getPlayerGameToken, getPlayerInfo } from '../../../utils/ethereum';
 import { thereWasAnError } from '../../../utils/toasters';
-import AvatarImage from '../../../components/AvatarImage';
+import AvatarImage from '../../../components/Images/AvatarImage';
+import DefaultImage from '../../../components/Images/DefaultImage';
 import { randomBackground } from '../../../utils/images';
 
 import * as styles from '../../../styles';
 
-const playerContainer = `${styles.flexCenteredCentered} flex-col p-16`;
+const playerContainer = `${styles.flexCenteredCentered} flex-col p-16 gap-2`;
+
+const AttackButton: FC<{ path: string; size: 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' }> = ({ path, size }) => {
+  return (
+    <button className="bg-slate-300 bg-opacity-80 border-2 border-siteBlue duration-300 transform hover:translate-y-1 rounded-md">
+      <DefaultImage path={path} size={size} />
+    </button>
+  );
+};
 
 const Stage: FC = () => {
   const { name } = useParams();
@@ -57,23 +67,27 @@ const Stage: FC = () => {
   const bg = randomBackground();
 
   // w-screen
-  // https://tailwindcomponents.com/component/circular-progress-bar
-  // https://tailwindcomponents.com/component/animated-dynamic-progress-bar
   return (
     <div className={`flex flex-col min-h-[91vh] bg-cover bg-no-repeat bg-center ${bg}`}>
       <h1 className="font-omega text-center text-2xl py-6">{name}</h1>
       {!!player && !!oponent && (
-        <div className="grow flex max-sm:flex-col justify-between">
-          <div className={playerContainer}>
-            <AvatarImage address={player.address} />
-            <span>{player.name}</span>
-            <span>{playerToken.attack}</span>
-          </div>
-          <div className={`${styles.flexCenteredCentered} p-16`}>VS</div>
-          <div className={playerContainer}>
-            <AvatarImage address={oponent.address} />
-            <span>{oponent.name}</span>
-            <span>{oponentToken.attack}</span>
+        <div className="grow flex justify-center">
+          <div className="grow flex max-sm:flex-col justify-between sm:max-w-6xl">
+            <div className={playerContainer}>
+              <AvatarImage address={player.address} size="md" />
+              <span>{player.name}</span>
+              <AttackButton path="/assets/double-beam-rifle-up.png" size="xxs" />
+              <ProgressBar color="green-400" current={50} max={100} />
+              <ProgressBar color="siteBlue" current={24} max={25} />
+            </div>
+            <div className={`${styles.flexCenteredCentered} p-16`}>VS</div>
+            <div className={playerContainer}>
+              <AvatarImage address={oponent.address} size="md" />
+              <span>{oponent.name}</span>
+              <AttackButton path="/assets/double-beam-rifle-down.png" size="xxs" />
+              <ProgressBar color="green-400" current={50} max={100} />
+              <ProgressBar color="siteBlue" current={24} max={25} />
+            </div>
           </div>
         </div>
       )}

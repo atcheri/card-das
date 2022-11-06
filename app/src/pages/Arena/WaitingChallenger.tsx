@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import AvatarImage from '../../components/AvatarImage';
+import AvatarImage from '../../components/Images/AvatarImage';
 
 import * as styles from '../../styles';
 
