@@ -19,14 +19,18 @@ const CardDas: FC<CardDasProps> = ({ player }) => {
   return (
     <div className={`${styles.flexCenteredCentered}`}>
       <Tilt glareEnable perspective={2500} glareMaxOpacity={0.2}>
-        <div className="flex flex-col items-center border-2 rounded-xl min-w-full sm:min-w-[24rem]">
-          <span>{player.name}</span>
-          <AvatarImage address={player.address} size="6xl" />
-          <div className="grow">
-            <AttackButton path="/assets/double-beam-rifle-down.png" size="sm" />
-            <DefenseButton path="/assets/sazabi-shield.png" size="sm" />
-            <ProgressBar color="siteRed" current={50} max={100} />
-            <ProgressBar color="siteBlue" current={24} max={25} />
+        <div className="flex flex-col items-center border-2 rounded-xl min-w-full sm:min-w-[24rem] backdrop-blur-2xl">
+          <span className="font-omega bg-black bg-opacity-30 text-center w-[100%] rounded-xl py-1">{player.name}</span>
+          <div className="flex justify-between items-center">
+            <AttackButton className="relative lg:-left-12" path="/assets/double-beam-rifle-down.png" />
+            <AvatarImage address={player.address} size={60} />
+            <DefenseButton className="relative lg:-right-12" path="/assets/sazabi-shield.png" />
+          </div>
+          <div className="flex grow w-[100%] rounded-xl">
+            <div className="grow flex flex-col rounded-xl">
+              <ProgressBar color="siteGreen" current={50} max={100} />
+              <ProgressBar color="siteBlue" current={24} max={25} />
+            </div>
           </div>
         </div>
       </Tilt>
