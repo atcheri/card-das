@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
-import AvatarImage from '../../components/Images/AvatarImage';
+import AvatarImage from '../../../components/Images/AvatarImage';
 
-import * as styles from '../../styles';
+import * as styles from '../../../styles';
 
 type WaitingChallengerProps = {
   address: string;

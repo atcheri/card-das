@@ -13,6 +13,7 @@ import AvatarImage from '../../../components/Images/AvatarImage';
 import DefaultImage from '../../../components/Images/DefaultImage';
 import { randomBackground } from '../../../utils/images';
 import CardDas from '../../../components/CardDas';
+import ArenaRules from '../../../components/ArenaRules';
 
 import * as styles from '../../../styles';
 
@@ -53,6 +54,9 @@ const Stage: FC = () => {
           </div>
         </div>
       )}
+      <div className="mb-6 flex space-x-2 justify-center">
+        <ArenaRules />
+      </div>
     </div>
   );
 };

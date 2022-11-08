@@ -5,13 +5,14 @@ import DefaultButton from '../../../components/buttons/DefaultButton';
 import useEthContext from '../../../hooks/useEthContext';
 import useArenaContext from '../../../hooks/useArenaContext';
 import { ROUTES } from '../../../router/constants';
-import WaitingChallenger from '../WaitingChallenger';
-import { Arena, Player } from '../../../types';
+import WaitingChallenger from './WaitingChallenger';
+import { Player } from '../../../types';
 import Loader from '../../../components/Loader';
 import { thereWasAnError } from '../../../utils/toasters';
 import useContractContext from '../../../hooks/useContractContext';
 import { canPlayerJoinArena, getPlayerInfo } from '../../../utils/ethereum';
 import usePendingArena from '../../../hooks/usePendingArena';
+import ArenaRules from '../../../components/ArenaRules';
 
 import * as styles from '../../../styles';
 
@@ -113,6 +114,9 @@ const WaitingRoom: FC = () => {
             Join another <span className="font-omega">Arena</span>
           </Link>
         </div>
+      </div>
+      <div className="mb-6 flex space-x-2 justify-center">
+        <ArenaRules />
       </div>
     </div>
   );
