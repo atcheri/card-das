@@ -19,34 +19,9 @@ import * as styles from '../../../styles';
 
 const Stage: FC = () => {
   const { name } = useParams();
-  const { arena, loading } = usePendingArena(name!);
-  const { contract } = useContractContext();
-  const { player } = useEthContext();
-  const [oponent, setOponent] = useState<Player | null>(null);
-  const [playerToken, setPlayerToken] = useState<PlayerGameToken | null>(null);
-  const [oponentToken, setOponentToken] = useState<PlayerGameToken | null>(null);
+  const { loading, arenaPlayer, arenaOponent } = usePendingArena(name!);
 
-  useEffect(() => {
-    if (!contract || !arena || !player) {
-      return;
-    }
-
-    (async () => {
-      try {
-        const playerGameToken = await getPlayerGameToken(contract, player.address);
-        const oponentAddress = findOpenentAddress(player.address)(arena);
-        const fetchedOpenent = await getPlayerInfo(contract, oponentAddress);
-        const openentGameToken = await getPlayerGameToken(contract, fetchedOpenent.address);
-        setOponent(fetchedOpenent);
-        setPlayerToken(playerGameToken);
-        setOponentToken(openentGameToken);
-      } catch (error) {
-        console.log('error:', error);
-      }
-    })();
-  }, [contract, arena, player]);
-
-  if (loading || !playerToken || !oponentToken) {
+  if (loading) {
     return <Loader color="#C33149" secondaryColor="#5F4B66" text="Preparing the Arena..." />;
   }
 
@@ -61,12 +36,12 @@ const Stage: FC = () => {
   return (
     <div className={`flex flex-col min-h-[91vh] bg-cover bg-no-repeat bg-center ${bg}`}>
       <h1 className="font-omega text-center text-2xl py-6">{name}</h1>
-      {!!player && !!oponent && (
+      {!!arenaPlayer && !!arenaOponent && (
         <div className="grow flex justify-center">
           <div className="grow flex max-sm:flex-col justify-between sm:max-w-6xl">
-            <CardDas player={player} />
+            <CardDas player={arenaPlayer} />
             <div className={`${styles.flexCenteredCentered} p-16`}>VS</div>
-            <CardDas player={oponent} />
+            <CardDas player={arenaOponent} />
           </div>
         </div>
       )}

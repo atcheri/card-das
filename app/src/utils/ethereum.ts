@@ -5,7 +5,7 @@ import { Arena, ArenaStatus, Player, PlayerGameToken } from '../types';
 const isPlayerInArena =
   (address: string) =>
   (arena: Arena): boolean =>
-    arena.players.map((name) => name.toLowerCase()).includes(address.toLowerCase());
+    arena.players.includes(address.toLowerCase());
 
 const isPlayingInArena =
   (address: string) =>
@@ -26,7 +26,7 @@ const filterPendingArena = (arena: Arena): boolean => arena.status === ArenaStat
 
 const toPlayer = (data: any): Player => {
   return {
-    address: data.playerAddress,
+    address: data.playerAddress.toLowerCase(),
     name: data.playerName,
     mana: data.playerMana.toNumber(),
     health: data.playerHealth.toNumber(),
@@ -48,7 +48,7 @@ const toArena = (data: any): Arena => {
     status: data.battleStatus,
     hash: data.battleHash,
     name: data.name,
-    players: data.players,
+    players: data.players.map((p: any) => p.toLowerCase()),
     moves: data.moves,
     winner: data.winner,
   };
@@ -120,7 +120,4 @@ export const canPlayerJoinArena =
 export const findOpenentAddress =
   (address: string) =>
   (arena: Arena): string =>
-    arena.players
-      .map((name) => name.toLowerCase())
-      .filter((a) => a !== address)
-      .shift() || '';
+    arena.players.filter((a) => a !== address).shift() || '';

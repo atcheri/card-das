@@ -32,7 +32,7 @@ export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children })
         method: 'eth_requestAccounts',
       });
       if (!!accounts) {
-        setWalletAddress(accounts[0]);
+        setWalletAddress(accounts[0].toLowerCase());
         init();
       }
     } catch (error) {
