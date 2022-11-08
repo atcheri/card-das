@@ -1,14 +1,20 @@
-import { FC } from 'react';
-import { Link } from 'react-router-dom';
+import { FC, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 import HeaderOne from '../../components/Headers/HeaderOne';
 import useEthContext from '../../hooks/useEthContext';
 import { ROUTES } from '../../router/constants';
+import { thereWasAnError } from '../../utils/toasters';
 import PendingArenas from './PendingArenas';
 import StartedArenas from './StartedArenas';
 
 const JoinArena: FC = () => {
   const { player } = useEthContext();
+  const location = useLocation();
+
+  useEffect(() => {
+    location.state?.message && thereWasAnError(location.state.message);
+  }, []);
 
   if (!player) {
     return null;

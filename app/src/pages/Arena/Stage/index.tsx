@@ -9,7 +9,6 @@ import usePendingArena from '../../../hooks/usePendingArena';
 import { ROUTES } from '../../../router/constants';
 import { Player, PlayerGameToken } from '../../../types';
 import { findOpenentAddress, getPlayerGameToken, getPlayerInfo } from '../../../utils/ethereum';
-import { thereWasAnError } from '../../../utils/toasters';
 import AvatarImage from '../../../components/Images/AvatarImage';
 import DefaultImage from '../../../components/Images/DefaultImage';
 import { randomBackground } from '../../../utils/images';
@@ -19,10 +18,19 @@ import * as styles from '../../../styles';
 
 const Stage: FC = () => {
   const { name } = useParams();
-  const { loading, arenaPlayer, arenaOponent } = usePendingArena(name!);
+  const { loading, arenaPlayer, arenaOponent, playerAllowedToEnterArena } = usePendingArena(name!);
 
   if (loading) {
     return <Loader color="#C33149" secondaryColor="#5F4B66" text="Preparing the Arena..." />;
+  }
+
+  if (arenaPlayer && playerAllowedToEnterArena(arenaPlayer)) {
+    return (
+      <Navigate
+        to={`/${ROUTES.ARENA}/${ROUTES.JOIN}`}
+        state={{ message: `You cannot enter the fight in the Arena "${name}". Try to join another one.` }}
+      />
+    );
   }
 
   // if (!arena || arena.players.length < 2) {

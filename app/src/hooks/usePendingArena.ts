@@ -52,7 +52,7 @@ const usePendingArena = (name: string) => {
     return arena.players.includes(player.address);
   };
 
-  return { arena, arenaPlayer, arenaOponent, loading };
+  return { arena, arenaPlayer, arenaOponent, loading, playerAllowedToEnterArena };
 };
 
 export type UsePendingArenaType = ReturnType<typeof usePendingArena>;
