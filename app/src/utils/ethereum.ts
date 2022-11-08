@@ -1,6 +1,7 @@
 import { ethers } from 'ethers';
 
-import { Arena, ArenaStatus, Player, PlayerGameToken } from '../types';
+import { Arena, ArenaStatus, MoveType, Player, PlayerGameToken } from '../types';
+import { playAudio } from './audio';
 
 const isPlayerInArena =
   (address: string) =>
@@ -121,3 +122,17 @@ export const findOpenentAddress =
   (address: string) =>
   (arena: Arena): string =>
     arena.players.filter((a) => a !== address).shift() || '';
+
+// export const attackOponent = (arenaName: string) => (c: ethers.Contract) => async (): Promise<void> => {
+//   return attackOrDefend(MoveType.Attack)(arenaName)(c);
+// };
+
+// export const defendAgainst = (arenaName: string) => (c: ethers.Contract) => async (): Promise<void> => {
+//   return attackOrDefend(MoveType.Defense)(arenaName)(c);
+// };
+
+export const attackOrDefend =
+  (move: MoveType) => (arenaName: string) => (c: ethers.Contract) => async (): Promise<void> => {
+    playAudio(move === MoveType.Attack ? '/assets/audios/gundam-beam-rifle.mp3' : '/assets/audios/gundam-hit.mp3');
+    c.attattackOrDefendChoice(move, arenaName);
+  };

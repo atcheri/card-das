@@ -56,3 +56,8 @@ export const sizes = {
 };
 
 export type ImageSizes = keyof typeof sizes;
+
+export enum MoveType {
+  Attack = 1,
+  Defense,
+}

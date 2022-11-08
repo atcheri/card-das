@@ -3,8 +3,8 @@ import Tilt from 'react-parallax-tilt';
 
 import { Player } from '../../types';
 import AvatarImage from '../Images/AvatarImage';
-import AttackButton from '../buttons/DefenseButton';
-import DefenseButton from '../buttons/AttackButton';
+import AttackButton from '../buttons/AttackButton';
+import DefenseButton from '../buttons/DefenseButton';
 import ProgressBar from '../../pages/Arena/Stage/ProgressBar';
 
 import * as styles from '../../styles';

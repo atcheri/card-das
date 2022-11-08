@@ -3,16 +3,19 @@ import { createContext, FC, PropsWithChildren, useEffect, useState } from 'react
 
 import useContractContext from '../hooks/useContractContext';
 import useEthContext from '../hooks/useEthContext';
-import { Arena, ArenaStatus } from '../types';
+import { Arena, ArenaStatus, MoveType } from '../types';
 import { createJoinedArenaEventHandler } from '../events/createPlayerEvent';
-import { joinArena, loadArena, loadPendingArenas, loadUserArenas } from '../utils/ethereum';
+import { attackOrDefend, joinArena, loadArena, loadPendingArenas, loadUserArenas } from '../utils/ethereum';
 
 type ArenaContextProps = {
   arena: Arena;
+  busy: boolean;
   createArena: (arenaName: string) => void;
   getPendingArena: (name: string) => Promise<Arena | null>;
   getPendingArenas: () => Promise<Arena[]>;
   joinPendingArena: (name: string) => Promise<boolean>;
+  attackOponent: () => Promise<void>;
+  defendAgainst: () => Promise<void>;
 };
 
 export const ArenaContext = createContext<ArenaContextProps>({} as ArenaContextProps);
@@ -29,6 +32,7 @@ const initialArena: Arena = {
 export const ArenaContextProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
   const { contract, provider } = useContractContext();
   const [arena, setArena] = useState<Arena>(initialArena);
+  const [busy, setBusy] = useState(false);
   const { player } = useEthContext();
 
   useEffect(() => {
@@ -94,12 +98,30 @@ export const ArenaContextProvider: FC<PropsWithChildren<{}>> = ({ children }) =>
     // return joinedArena.players[joinedArena.players.length - 1] === player.address;
   };
 
+  const _attackOrDefend = (move: MoveType): (() => Promise<void>) => {
+    if (!contract || !arena) {
+      return async () => {};
+    }
+
+    return async () => {
+      setBusy((b) => !b);
+      await attackOrDefend(move)(arena.name)(contract)();
+      setTimeout(() => {
+        setBusy((b) => !b);
+      }, 3000);
+      // setBusy(b => !b)
+    };
+  };
+
   const value: ArenaContextProps = {
     arena,
+    busy,
     createArena,
     getPendingArena,
     getPendingArenas,
     joinPendingArena,
+    attackOponent: _attackOrDefend(MoveType.Attack),
+    defendAgainst: _attackOrDefend(MoveType.Defense),
   };
 
   return <ArenaContext.Provider value={value}>{children}</ArenaContext.Provider>;

@@ -16,7 +16,6 @@ const DefaultImage: FC<DefaultImageProps> = ({ path, size, className, ...rest })
       const px = sizes[size];
       sizeClass = `w-${px} h-${px}`;
     }
-    console.log('sizeClass:', sizeClass);
   }
 
   return (

@@ -32,10 +32,10 @@ const ArenaRules: FC<ArenaRulesProps> = () => {
         <h3 className="font-omega text-3xl my-6">Arena Rules</h3>
         {rules.map((rule, i) => {
           return (
-            <p key={`arena-rule-${i}`} className="font-medium text-white text-xl mb-4">
+            <div key={`arena-rule-${i}`} className="font-medium text-white text-xl mb-4">
               <div className="italic">Rule {i + 1}: </div>
               <span className="ml-6">{rule}</span>
-            </p>
+            </div>
           );
         })}
       </Drawer>

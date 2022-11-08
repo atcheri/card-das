@@ -1,17 +1,30 @@
 import { FC, HTMLAttributes } from 'react';
+import { TailSpin } from 'react-loader-spinner';
 
+import useArenaContext from '../../hooks/useArenaContext';
 import { ImageSizes } from '../../types';
 import DefaultImage from '../Images/DefaultImage';
 
-type AttackButtonProps = { path: string; size?: ImageSizes } & HTMLAttributes<HTMLElement>;
+type DefenseButtonProps = { path: string; size?: ImageSizes } & HTMLAttributes<HTMLElement>;
 
-const AttackButton: FC<AttackButtonProps> = ({ path, size, className }) => {
+const DefenseButton: FC<DefenseButtonProps> = ({ path, size, className }) => {
+  const { defendAgainst, busy } = useArenaContext();
+  const handleDefense = async () => {
+    await defendAgainst();
+  };
+
   return (
     <button
-      className={`bg-slate-500 border-2 border-gray-900 duration-300 transform hover:translate-y-[2px] hover:bg-gray-50 rounded-md ${className}`}>
-      <DefaultImage path={path} size={size} />
+      disabled={busy}
+      onClick={handleDefense}
+      className={`bg-slate-800 bg-opacity-20 border-2 border-gray-400 duration-300 transform hover:translate-y-[2px] hover:bg-slate-50 rounded-md ${className}`}>
+      {busy ? (
+        <TailSpin height="55" width="55" color="#4fa94d" radius="1" wrapperClass="w-14 h-14" />
+      ) : (
+        <DefaultImage path={path} size={size} />
+      )}
     </button>
   );
 };
 
-export default AttackButton;
+export default DefenseButton;

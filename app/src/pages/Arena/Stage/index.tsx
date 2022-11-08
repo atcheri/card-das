@@ -25,7 +25,7 @@ const Stage: FC = () => {
     return <Loader color="#C33149" secondaryColor="#5F4B66" text="Preparing the Arena..." />;
   }
 
-  if (arenaPlayer && playerAllowedToEnterArena(arenaPlayer)) {
+  if (arenaPlayer && !playerAllowedToEnterArena(arenaPlayer)) {
     return (
       <Navigate
         to={`/${ROUTES.ARENA}/${ROUTES.JOIN}`}
