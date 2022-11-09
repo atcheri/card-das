@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 
+import PrimaryButton from '../buttons/PrimaryButton';
 import Drawer from '../Drawer';
 
 const rules = [
@@ -38,6 +39,9 @@ const ArenaRules: FC<ArenaRulesProps> = () => {
             </div>
           );
         })}
+        <div className="flex justify-end my-10">
+          <PrimaryButton onClick={toggleOpen}>Exit Arena</PrimaryButton>
+        </div>
       </Drawer>
     </>
   );

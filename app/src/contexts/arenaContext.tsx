@@ -4,8 +4,16 @@ import { createContext, FC, PropsWithChildren, useEffect, useState } from 'react
 import useContractContext from '../hooks/useContractContext';
 import useEthContext from '../hooks/useEthContext';
 import { Arena, ArenaStatus, MoveType } from '../types';
-import { createJoinedArenaEventHandler } from '../events/createPlayerEvent';
+import { arenaMoveMadeEventHandler, createJoinedArenaEventHandler } from '../events/createPlayerEvent';
 import { attackOrDefend, joinArena, loadArena, loadPendingArenas, loadUserArenas } from '../utils/ethereum';
+import {
+  arenaCreated,
+  moveCancelled,
+  playerAlreadyMadeAMove,
+  playerJoinedArena,
+  playerMadeAMove,
+  thereWasAnError,
+} from '../utils/toasters';
 
 type ArenaContextProps = {
   arena: Arena;
@@ -58,7 +66,20 @@ export const ArenaContextProvider: FC<PropsWithChildren<{}>> = ({ children }) =>
       contract,
       provider,
       address: player.address,
-      callbackWithResult: async (result: Result) => {},
+      callbackWithResult: async (result: Result /*{ battleName: string; player1: string; player2: string }*/) => {
+        if (result.player1 && result.player2) {
+          arenaCreated(result.battleName);
+          return;
+        }
+        playerJoinedArena(result.battleName);
+      },
+    });
+    arenaMoveMadeEventHandler({
+      contract,
+      provider,
+      callbackWithResult: async (result: Result) => {
+        playerMadeAMove(player, result.shift() || '');
+      },
     });
   }, [contract, provider, player]);
 
@@ -104,12 +125,25 @@ export const ArenaContextProvider: FC<PropsWithChildren<{}>> = ({ children }) =>
     }
 
     return async () => {
-      setBusy((b) => !b);
-      await attackOrDefend(move)(arena.name)(contract)();
-      setTimeout(() => {
+      try {
         setBusy((b) => !b);
-      }, 3000);
-      // setBusy(b => !b)
+        await attackOrDefend(move)(arena.name)(contract)();
+        // setTimeout(() => {
+        //   setBusy((b) => !b);
+        // }, 3000);
+        // setBusy(b => !b)
+      } catch (err) {
+        console.log('_attackOrDefend err:', err);
+        let errMsg = '';
+        if (err instanceof Error) {
+          errMsg = err.message;
+        } else if (typeof err === 'string') {
+          errMsg = err;
+        }
+        errMsg.includes('You have already made a move!') ? playerAlreadyMadeAMove(player!) : moveCancelled(move);
+      } finally {
+        setBusy((b) => !b);
+      }
     };
   };
 

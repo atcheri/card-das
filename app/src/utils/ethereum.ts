@@ -133,6 +133,11 @@ export const findOpenentAddress =
 
 export const attackOrDefend =
   (move: MoveType) => (arenaName: string) => (c: ethers.Contract) => async (): Promise<void> => {
-    playAudio(move === MoveType.Attack ? '/assets/audios/gundam-beam-rifle.mp3' : '/assets/audios/gundam-hit.mp3');
-    c.attattackOrDefendChoice(move, arenaName);
+    try {
+      await c.attackOrDefendChoice(move, arenaName);
+      playAudio(move === MoveType.Attack ? '/assets/audios/gundam-beam-rifle.mp3' : '/assets/audios/gundam-hit.mp3');
+    } catch (error) {
+      playAudio('/assets/audios/negative.mp3');
+      throw error;
+    }
   };

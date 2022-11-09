@@ -1,16 +1,9 @@
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 
-import ProgressBar from './ProgressBar';
 import Loader from '../../../components/Loader';
-import useContractContext from '../../../hooks/useContractContext';
-import useEthContext from '../../../hooks/useEthContext';
 import usePendingArena from '../../../hooks/usePendingArena';
 import { ROUTES } from '../../../router/constants';
-import { Player, PlayerGameToken } from '../../../types';
-import { findOpenentAddress, getPlayerGameToken, getPlayerInfo } from '../../../utils/ethereum';
-import AvatarImage from '../../../components/Images/AvatarImage';
-import DefaultImage from '../../../components/Images/DefaultImage';
 import { randomBackground } from '../../../utils/images';
 import CardDas from '../../../components/CardDas';
 import ArenaRules from '../../../components/ArenaRules';
@@ -34,11 +27,6 @@ const Stage: FC = () => {
     );
   }
 
-  // if (!arena || arena.players.length < 2) {
-  //   thereWasAnError(`Cannot start the fight in the Arena "${name}". Try to join another one.`);
-  //   return <Navigate to={`/${ROUTES.ARENA}/${ROUTES.JOIN}`} />;
-  // }
-
   const bg = randomBackground();
 
   // w-screen
@@ -50,7 +38,7 @@ const Stage: FC = () => {
           <div className="grow flex max-sm:flex-col justify-between sm:max-w-6xl">
             <CardDas player={arenaPlayer} />
             <div className={`${styles.flexCenteredCentered} p-16`}>VS</div>
-            <CardDas player={arenaOponent} />
+            <CardDas player={arenaOponent} disabled />
           </div>
         </div>
       )}

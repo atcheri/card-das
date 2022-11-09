@@ -21,7 +21,7 @@ const AddNewEvent = (
 export type createNewPlayerEventHandlerParams = {
   contract: ethers.Contract;
   provider: ethers.providers.Web3Provider;
-  address: string;
+  address?: string;
   callbackWithResult: (result: Result) => void;
 };
 
@@ -49,10 +49,23 @@ export const createJoinedArenaEventHandler = ({
 }: createNewPlayerEventHandlerParams) => {
   const newBattleEvent = contract.filters.NewBattle();
   AddNewEvent(newBattleEvent, provider, ({ args }: LogDescription) => {
-    console.log('a player joined an existing arena', args, address);
+    console.log('a player joined an arena', args, address);
 
     if ([args.player1, args.player2].includes(address)) {
       callbackWithResult(args);
     }
+  });
+};
+
+export const arenaMoveMadeEventHandler = ({
+  contract,
+  provider,
+  callbackWithResult,
+}: createNewPlayerEventHandlerParams) => {
+  const newMoveEvent = contract.filters.BattleMove();
+  AddNewEvent(newMoveEvent, provider, ({ args }: LogDescription) => {
+    console.log('newMoveEvent callback args:', args);
+    console.log(`Arena: ${args._battleName}. A player made ${args._movesLeft === 1 ? 'an attack' : 'a defense'} move`);
+    callbackWithResult([args._movesLeft === 1 ? 'attack' : 'defense']);
   });
 };

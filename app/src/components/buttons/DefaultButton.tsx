@@ -2,6 +2,7 @@ import { ButtonHTMLAttributes, FC, PropsWithChildren } from 'react';
 
 export interface DefaultButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   color?: string;
+  hoverColor?: string;
   extraStyle?: string;
   font?: string;
   fontColor?: string;
@@ -13,6 +14,7 @@ export interface DefaultButtonProps extends ButtonHTMLAttributes<HTMLButtonEleme
 const DefaultButton: FC<PropsWithChildren<DefaultButtonProps>> = ({
   children,
   color = 'bg-slate-100',
+  hoverColor = 'bg-slate-300',
   extraStyle,
   font = 'font-omega',
   fontColor = 'text-gray-800',
@@ -23,7 +25,8 @@ const DefaultButton: FC<PropsWithChildren<DefaultButtonProps>> = ({
 }) => {
   return (
     <button
-      className={`${font} ${fontColor} bg- px-4 py-2 rounded-lg ${color} w-fit ${textColor} font-bold ${extraStyle}`}
+      className={`${font} ${fontColor} bg- px-4 py-2 rounded-lg transition-all ease-in duration-100 ${color} hover:${hoverColor}
+      } w-fit ${textColor} font-bold ${extraStyle}`}
       {...rest}>
       {loading ? (
         <>

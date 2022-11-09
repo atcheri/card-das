@@ -5,9 +5,9 @@ import useArenaContext from '../../hooks/useArenaContext';
 import { ImageSizes } from '../../types';
 import DefaultImage from '../Images/DefaultImage';
 
-type DefenseButtonProps = { path: string; size?: ImageSizes } & HTMLAttributes<HTMLElement>;
+type DefenseButtonProps = { disabled?: boolean; path: string; size?: ImageSizes } & HTMLAttributes<HTMLElement>;
 
-const DefenseButton: FC<DefenseButtonProps> = ({ path, size, className }) => {
+const DefenseButton: FC<DefenseButtonProps> = ({ disabled, path, size, className }) => {
   const { defendAgainst, busy } = useArenaContext();
   const handleDefense = async () => {
     await defendAgainst();
@@ -15,7 +15,7 @@ const DefenseButton: FC<DefenseButtonProps> = ({ path, size, className }) => {
 
   return (
     <button
-      disabled={busy}
+      disabled={busy || disabled}
       onClick={handleDefense}
       className={`bg-slate-800 bg-opacity-20 border-2 border-gray-400 duration-300 transform hover:translate-y-[2px] hover:bg-slate-50 rounded-md ${className}`}>
       {busy ? (

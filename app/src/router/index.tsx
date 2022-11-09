@@ -26,7 +26,9 @@ const Router: FC = () => {
           <Route path="*" element={<NotFound />} />
         </Route>
         <Route path={`${ROUTES.HOME}/${ROUTES.ARENA}`} element={<StageLayout />}>
-          <Route path={`${ROUTES.STAGE}/:name`} element={<Stage />} />
+          <Route path={`${ROUTES.HOME}${ROUTES.ARENA}`} element={<Restricted />}>
+            <Route path={`${ROUTES.STAGE}/:name`} element={<Stage />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

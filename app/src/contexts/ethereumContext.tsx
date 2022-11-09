@@ -53,15 +53,18 @@ export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children })
       return;
     }
 
-    createNewPlayerEventHandler({
-      contract,
-      provider,
-      address: walletAddress,
-      callbackWithResult: async (result: Result) => {
-        playerCreated(result.owner);
-        setPlayer(await getPlayerInfo(contract, walletAddress));
-      },
-    });
+    (async () => {
+      const playerInfo = await getPlayerInfo(contract, walletAddress);
+      createNewPlayerEventHandler({
+        contract,
+        provider,
+        address: walletAddress,
+        callbackWithResult: async (result: Result) => {
+          playerCreated(result.owner);
+          setPlayer(playerInfo);
+        },
+      });
+    })();
   }, [contract, provider, walletAddress]);
 
   useEffect(() => {
