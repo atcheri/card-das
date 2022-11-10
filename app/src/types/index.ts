@@ -1,5 +1,6 @@
 export type Player = {
   address: string;
+  avatar: Avatar;
   name: string;
   mana: number;
   health: number;
@@ -21,6 +22,7 @@ export enum ArenaStatus {
 }
 
 export type Arena = {
+  background: string;
   status: ArenaStatus;
   hash: string;
   name: string;

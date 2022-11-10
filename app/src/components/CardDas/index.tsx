@@ -26,7 +26,7 @@ const CardDas: FC<CardDasProps> = ({ disabled = false, player }) => {
               className="relative lg:-left-12"
               path="/assets/double-beam-rifle-down.png"
             />
-            <AvatarImage address={player.address} size={60} />
+            <AvatarImage address={player.address} avatar={player.avatar} size={60} />
             <DefenseButton disabled={disabled} className="relative lg:-right-12" path="/assets/sazabi-shield.png" />
           </div>
           <div className="flex grow w-[100%] rounded-xl">

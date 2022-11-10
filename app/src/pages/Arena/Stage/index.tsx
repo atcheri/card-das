@@ -38,11 +38,9 @@ const Stage: FC = () => {
     );
   }
 
-  const bg = randomBackground();
-
   // w-screen
   return (
-    <div className={`flex flex-col min-h-[91vh] bg-cover bg-no-repeat bg-center ${bg}`}>
+    <div className={`flex flex-col min-h-[91vh] bg-cover bg-no-repeat bg-center ${arena.background}`}>
       <h1 className="font-omega text-center text-2xl py-6">{name}</h1>
       {!!arenaPlayer && !!arenaOponent && (
         <div className="grow flex justify-center">

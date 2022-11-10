@@ -12,14 +12,13 @@ type OpenedArenasProps = { arenasLoader: () => Promise<Arena[]>; buttonText?: st
 
 const OpenedArenas: FC<OpenedArenasProps> = ({ arenasLoader, buttonText = 'Join', path }) => {
   const { contract } = useContractContext();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [arenas, setArenas] = useState<Arena[]>([]);
 
   useEffect(() => {
     if (!contract) {
       return;
     }
-    setLoading(true);
     (async () => {
       try {
         const arenas = await arenasLoader();

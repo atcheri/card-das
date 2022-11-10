@@ -1,7 +1,8 @@
 import { ethers } from 'ethers';
 
-import { Arena, ArenaStatus, MoveType, Player, PlayerGameToken } from '../types';
+import { Arena, ArenaStatus, Avatar, MoveType, Player, PlayerGameToken } from '../types';
 import { playAudio } from './audio';
+import { randomAvatar, randomBackground } from './images';
 
 const isPlayerInArena =
   (address: string) =>
@@ -28,6 +29,7 @@ const filterPendingArena = (arena: Arena): boolean => arena.status === ArenaStat
 const toPlayer = (data: any): Player => {
   return {
     address: data.playerAddress.toLowerCase(),
+    avatar: getAvatar(data.playerName),
     name: data.playerName,
     mana: data.playerMana.toNumber(),
     health: data.playerHealth.toNumber(),
@@ -44,8 +46,35 @@ const toGameToken = (data: any): PlayerGameToken => {
   };
 };
 
+const getAvatar = (name: string): Avatar => {
+  const key = `player.${name}`;
+  const storedPlayerData = localStorage.getItem(key);
+  if (!storedPlayerData) {
+    const avatar = randomAvatar();
+    localStorage.setItem(`player.${name}`, JSON.stringify(avatar));
+    return avatar;
+  }
+
+  const parsedArenaData: Avatar = JSON.parse(storedPlayerData);
+  return parsedArenaData ? parsedArenaData : randomAvatar();
+};
+
+const getBackground = (name: string): string => {
+  const key = `arena.${name}`;
+  const storedArenaData = localStorage.getItem(key);
+  if (!storedArenaData) {
+    const bg = randomBackground();
+    localStorage.setItem(key, JSON.stringify({ background: bg }));
+    return bg;
+  }
+
+  const parsedArenaData = JSON.parse(storedArenaData);
+  return parsedArenaData && parsedArenaData.background ? parsedArenaData.background : randomBackground();
+};
+
 const toArena = (data: any): Arena => {
   return {
+    background: getBackground(data.name),
     status: data.battleStatus,
     hash: data.battleHash,
     name: data.name,
