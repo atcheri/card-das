@@ -2,17 +2,17 @@ import { FC } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 
 import Loader from '../../../components/Loader';
-import usePendingArena from '../../../hooks/usePendingArena';
 import { ROUTES } from '../../../router/constants';
 import { randomBackground } from '../../../utils/images';
 import CardDas from '../../../components/CardDas';
 import ArenaRules from '../../../components/ArenaRules';
+import useArenaStageContext from '../../../hooks/useArenaStageContext';
 
 import * as styles from '../../../styles';
 
 const Stage: FC = () => {
   const { name } = useParams();
-  const { loading, arenaPlayer, arenaOponent, playerAllowedToEnterArena } = usePendingArena(name!);
+  const { arenaPlayer, arenaOponent, loading, playerAllowedToEnterArena } = useArenaStageContext();
 
   if (loading) {
     return <Loader color="#C33149" secondaryColor="#5F4B66" text="Preparing the Arena..." />;

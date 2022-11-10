@@ -4,6 +4,7 @@ import { ToastContainer } from 'react-toastify';
 
 import MainHeader from './Headers/MainHeader';
 import Footer from './Footer';
+import { ArenaStageContextProvider } from '../contexts/arenaStageContext';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -11,7 +12,7 @@ const layoutContainer = 'text-white flex flex-col bg-siteblack';
 
 const StageLayout: FC = () => {
   return (
-    <>
+    <ArenaStageContextProvider>
       <ToastContainer />
       <div className={layoutContainer}>
         <main className={'grow'}>
@@ -22,7 +23,7 @@ const StageLayout: FC = () => {
         </main>
       </div>
       <Footer />
-    </>
+    </ArenaStageContextProvider>
   );
 };
 

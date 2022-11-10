@@ -28,5 +28,8 @@ export const playerAlreadyMadeAMove = ({ name }: Player) =>
 
 export const mustBeRegistered = () => toast.warn('You must become a player to access the arena.', toastConfig);
 
+export const alreadyRegistered = (name: string) =>
+  toast.warn(`You are already registered as a player as ${name}.`, toastConfig);
+
 export const moveCancelled = (move: MoveType) =>
   toast.warn(`Your ${getAttackOrDefense} move was cancelled`, toastConfig);

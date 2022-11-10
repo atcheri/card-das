@@ -18,7 +18,7 @@ const AddNewEvent = (
   provider.on(event, eventListener);
 };
 
-export type createNewPlayerEventHandlerParams = {
+export type ContractEventHandlerParams = {
   contract: ethers.Contract;
   provider: ethers.providers.Web3Provider;
   address?: string;
@@ -30,7 +30,7 @@ export const createNewPlayerEventHandler = ({
   provider,
   address,
   callbackWithResult,
-}: createNewPlayerEventHandlerParams) => {
+}: ContractEventHandlerParams) => {
   const newPlayerEvent = contract.filters.NewPlayer();
   AddNewEvent(newPlayerEvent, provider, ({ args }: LogDescription) => {
     console.log('new player created', args);
@@ -46,7 +46,7 @@ export const createJoinedArenaEventHandler = ({
   provider,
   address,
   callbackWithResult,
-}: createNewPlayerEventHandlerParams) => {
+}: ContractEventHandlerParams) => {
   const newBattleEvent = contract.filters.NewBattle();
   AddNewEvent(newBattleEvent, provider, ({ args }: LogDescription) => {
     console.log('a player joined an arena', args, address);
@@ -57,15 +57,22 @@ export const createJoinedArenaEventHandler = ({
   });
 };
 
-export const arenaMoveMadeEventHandler = ({
-  contract,
-  provider,
-  callbackWithResult,
-}: createNewPlayerEventHandlerParams) => {
+export const arenaMoveMadeEventHandler = ({ contract, provider, callbackWithResult }: ContractEventHandlerParams) => {
   const newMoveEvent = contract.filters.BattleMove();
   AddNewEvent(newMoveEvent, provider, ({ args }: LogDescription) => {
     console.log('newMoveEvent callback args:', args);
     console.log(`Arena: ${args._battleName}. A player made ${args._movesLeft === 1 ? 'an attack' : 'a defense'} move`);
     callbackWithResult([args._movesLeft === 1 ? 'attack' : 'defense']);
+  });
+};
+
+export const roundEndedEventHandler = ({ contract, provider, callbackWithResult }: ContractEventHandlerParams) => {
+  const roundEndedEvent = contract.filters.RoundEnded();
+  AddNewEvent(roundEndedEvent, provider, (desc: LogDescription) => {
+    console.log('desc:', desc);
+    const { args } = desc;
+    console.log('args:', args);
+
+    // callbackWithResult();
   });
 };

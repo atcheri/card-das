@@ -6,12 +6,11 @@ import useEthContext from '../../../hooks/useEthContext';
 import useArenaContext from '../../../hooks/useArenaContext';
 import { ROUTES } from '../../../router/constants';
 import WaitingChallenger from './WaitingChallenger';
-import { Player } from '../../../types';
+import { Arena, Player } from '../../../types';
 import Loader from '../../../components/Loader';
 import { thereWasAnError } from '../../../utils/toasters';
 import useContractContext from '../../../hooks/useContractContext';
-import { canPlayerJoinArena, getPlayerInfo } from '../../../utils/ethereum';
-import usePendingArena from '../../../hooks/usePendingArena';
+import { canPlayerJoinArena, getPlayerInfo, loadArena } from '../../../utils/ethereum';
 import ArenaRules from '../../../components/ArenaRules';
 
 import * as styles from '../../../styles';
@@ -30,28 +29,41 @@ const WaitingRoom: FC = () => {
   const { name } = useParams();
   const navigate = useNavigate();
   const { joinPendingArena } = useArenaContext();
-  const { arena, loading } = usePendingArena(name!);
+  const [loadingArenaData, setLoadingArenaData] = useState(true);
   const { player } = useEthContext();
   const { contract } = useContractContext();
+  const [waitingArena, setWaitingArena] = useState<Arena | null>(null);
   const [creator, setCreator] = useState<Player>(anynomouPlayer);
   const [joining, setJoining] = useState(false);
 
   useEffect(() => {
-    if (!arena || !contract) {
+    if (!name) {
+      return;
+    }
+
+    (async () => {
+      const arena = await loadArena(contract, name);
+      setWaitingArena(arena);
+      setLoadingArenaData(false);
+    })();
+  }, [contract]);
+
+  useEffect(() => {
+    if (!waitingArena || !contract) {
       return;
     }
     (async () => {
-      const creatorAddr = arena.players[0];
+      const creatorAddr = waitingArena.players[0];
       const c = await getPlayerInfo(contract, creatorAddr);
       setCreator(c);
     })();
-  }, [arena, contract]);
+  }, [waitingArena, contract]);
 
-  if (loading) {
+  if (loadingArenaData) {
     return <Loader text={`Please wait while loading Arena ${name} data`} />;
   }
 
-  const canJoin = arena && player && canPlayerJoinArena(player.address)(arena);
+  const canJoin = waitingArena && player && canPlayerJoinArena(player.address)(waitingArena);
   if (!canJoin) {
     thereWasAnError('Cannot join the requsted Arena. Try to join another one.');
     return <Navigate to={`/${ROUTES.ARENA}/${ROUTES.JOIN}`} />;

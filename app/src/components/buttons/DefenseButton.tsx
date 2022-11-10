@@ -1,14 +1,14 @@
 import { FC, HTMLAttributes } from 'react';
 import { TailSpin } from 'react-loader-spinner';
 
-import useArenaContext from '../../hooks/useArenaContext';
+import useArenaStageContext from '../../hooks/useArenaStageContext';
 import { ImageSizes } from '../../types';
 import DefaultImage from '../Images/DefaultImage';
 
 type DefenseButtonProps = { disabled?: boolean; path: string; size?: ImageSizes } & HTMLAttributes<HTMLElement>;
 
 const DefenseButton: FC<DefenseButtonProps> = ({ disabled, path, size, className }) => {
-  const { defendAgainst, busy } = useArenaContext();
+  const { busy, defendAgainst } = useArenaStageContext();
   const handleDefense = async () => {
     await defendAgainst();
   };
