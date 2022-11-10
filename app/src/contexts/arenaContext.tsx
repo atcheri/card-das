@@ -41,18 +41,6 @@ export const ArenaContextProvider: FC<PropsWithChildren<{}>> = ({ children }) =>
         arenaCreated(result.battleName);
       },
     });
-    arenaMoveMadeEventHandler({
-      contract,
-      provider,
-      callbackWithResult: async (result: Result) => {
-        playerMadeAMove(player, result.shift() || '');
-      },
-    });
-    roundEndedEventHandler({
-      contract,
-      provider,
-      callbackWithResult: async (result: Result) => {},
-    });
   }, [contract, provider, player]);
 
   const createArena = async (arenaName: string): Promise<boolean> => {

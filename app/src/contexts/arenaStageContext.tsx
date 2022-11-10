@@ -47,18 +47,7 @@ export const ArenaStageContextProvider: FC<PropsWithChildren<{}>> = ({ children 
     }
     (async () => {
       try {
-        const arena = await getPendingArena(name);
-        if (!arena) {
-          console.log('arena data not ready ...');
-          return;
-        }
-        const playerGameToken = await getPlayerGameToken(contract, player.address);
-        const oponentAddress = findOpenentAddress(player.address)(arena);
-        const oponent = await getPlayerInfo(contract, oponentAddress);
-        const oponentGameToken = await getPlayerGameToken(contract, oponent.address);
-        setArenaPlayer({ ...player, ...playerGameToken });
-        setArenaOponent({ ...oponent, ...oponentGameToken });
-        setArena(arena);
+        _updateStageState(name, player);
       } catch (err) {
         console.log('err:', err);
       } finally {
@@ -66,6 +55,21 @@ export const ArenaStageContextProvider: FC<PropsWithChildren<{}>> = ({ children 
       }
     })();
   }, [name, contract, provider, player]);
+
+  const _updateStageState = async (n: string, p: Player) => {
+    const arena = await getPendingArena(n);
+    if (!arena) {
+      console.log('arena data not ready ...');
+      return;
+    }
+    const playerGameToken = await getPlayerGameToken(contract, p.address);
+    const oponentAddress = findOpenentAddress(p.address)(arena);
+    const oponent = await getPlayerInfo(contract, oponentAddress);
+    const oponentGameToken = await getPlayerGameToken(contract, oponent.address);
+    setArenaPlayer({ ...p, ...playerGameToken });
+    setArenaOponent({ ...oponent, ...oponentGameToken });
+    setArena(arena);
+  };
 
   const _attackOrDefend = (move: MoveType): (() => Promise<void>) => {
     if (!contract || !arena) {
@@ -84,7 +88,13 @@ export const ArenaStageContextProvider: FC<PropsWithChildren<{}>> = ({ children 
         } else if (typeof err === 'string') {
           errMsg = err;
         }
-        errMsg.includes('You have already made a move!') ? playerAlreadyMadeAMove(player!) : moveCancelled(move);
+        if (errMsg.includes('You have already made a move!')) {
+          playerAlreadyMadeAMove(player!);
+        } else if (errMsg.includes('Mana not sufficient for attacking!')) {
+          moveCancelled(move, "You don't have enough Mana. Please try to use the defense move.");
+        } else {
+          moveCancelled(move);
+        }
       } finally {
         setBusy((b) => !b);
       }

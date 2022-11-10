@@ -69,10 +69,10 @@ export const arenaMoveMadeEventHandler = ({ contract, provider, callbackWithResu
 export const roundEndedEventHandler = ({ contract, provider, callbackWithResult }: ContractEventHandlerParams) => {
   const roundEndedEvent = contract.filters.RoundEnded();
   AddNewEvent(roundEndedEvent, provider, (desc: LogDescription) => {
-    console.log('desc:', desc);
+    console.log('roundEndedEvent desc:', desc);
     const { args } = desc;
-    console.log('args:', args);
+    console.log('roundEndedEvent args:', args);
 
-    // callbackWithResult();
+    callbackWithResult(desc.args);
   });
 };

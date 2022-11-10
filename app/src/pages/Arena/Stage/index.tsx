@@ -7,15 +7,26 @@ import { randomBackground } from '../../../utils/images';
 import CardDas from '../../../components/CardDas';
 import ArenaRules from '../../../components/ArenaRules';
 import useArenaStageContext from '../../../hooks/useArenaStageContext';
+import { ArenaStatus } from '../../../types';
 
 import * as styles from '../../../styles';
 
 const Stage: FC = () => {
   const { name } = useParams();
-  const { arenaPlayer, arenaOponent, loading, playerAllowedToEnterArena } = useArenaStageContext();
+  const { arena, arenaPlayer, arenaOponent, loading, playerAllowedToEnterArena } = useArenaStageContext();
 
   if (loading) {
     return <Loader color="#C33149" secondaryColor="#5F4B66" text="Preparing the Arena..." />;
+  }
+
+  if (arena.status === ArenaStatus.ENDED) {
+    const winner = [arenaPlayer, arenaOponent].find((p) => p.address === arena.winner.toLowerCase());
+    return (
+      <Navigate
+        to={`/${ROUTES.ARENA}/${ROUTES.JOIN}`}
+        state={{ message: `The arena "${name}" you tried to join is closed. The winner was ${winner?.name}.` }}
+      />
+    );
   }
 
   if (arenaPlayer && !playerAllowedToEnterArena(arenaPlayer)) {

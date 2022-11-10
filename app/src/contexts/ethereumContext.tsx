@@ -2,9 +2,13 @@ import { createContext, FC, PropsWithChildren, useEffect, useState } from 'react
 import { Result } from 'ethers/lib/utils';
 
 import { getPlayerInfo, isEthereum, isNotEthereum } from '../utils/ethereum';
-import { createNewPlayerEventHandler } from '../events/createPlayerEvent';
+import {
+  arenaMoveMadeEventHandler,
+  createNewPlayerEventHandler,
+  roundEndedEventHandler,
+} from '../events/createPlayerEvent';
 import { Player } from '../types';
-import { playerCreated } from '../utils/toasters';
+import { playerCreated, playerMadeAMove, roundEnded } from '../utils/toasters';
 import useContractContext from '../hooks/useContractContext';
 
 type EthereumContextProps = {
@@ -49,7 +53,7 @@ export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children })
   }, []);
 
   useEffect(() => {
-    if (!contract || !provider) {
+    if (!contract || !provider || !player) {
       return;
     }
 
@@ -62,6 +66,20 @@ export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children })
         callbackWithResult: async (result: Result) => {
           playerCreated(result.owner);
           setPlayer(playerInfo);
+        },
+      });
+      arenaMoveMadeEventHandler({
+        contract,
+        provider,
+        callbackWithResult: async (result: Result) => {
+          playerMadeAMove(player, result.shift() || '');
+        },
+      });
+      roundEndedEventHandler({
+        contract,
+        provider,
+        callbackWithResult: async (result: Result) => {
+          roundEnded();
         },
       });
     })();
