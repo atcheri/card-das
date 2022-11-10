@@ -5,11 +5,9 @@ import { Player } from '../../types';
 import AvatarImage from '../Images/AvatarImage';
 import AttackButton from '../buttons/AttackButton';
 import DefenseButton from '../buttons/DefenseButton';
-import ProgressBar from '../../pages/Arena/Stage/ProgressBar';
+import ProgressBar from '../ProgressBar';
 
 import * as styles from '../../styles';
-
-const playerContainer = `${styles.flexCenteredCentered}`;
 
 type CardDasProps = {
   disabled?: boolean;

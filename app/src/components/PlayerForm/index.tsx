@@ -3,7 +3,7 @@ import { ChangeEvent, FC, FormEvent, useState } from 'react';
 import useEthContext from '../../hooks/useEthContext';
 import PrimaryButton from '../buttons/PrimaryButton';
 import { validateName } from '../../utils/validators';
-import { thereWasAnError } from '../../utils/toasters';
+import { alreadyRegistered, thereWasAnError } from '../../utils/toasters';
 import useContractContext from '../../hooks/useContractContext';
 
 import * as styles from '../../styles';
@@ -38,6 +38,7 @@ const PlayerForm: FC<PlayerFormProps> = () => {
       const isPlayerRegistered = await isPlayerAlreadyRegistered(walletAddress);
       if (isPlayerRegistered) {
         console.log('player already registered', walletAddress);
+        alreadyRegistered(playerName);
         return;
       }
 

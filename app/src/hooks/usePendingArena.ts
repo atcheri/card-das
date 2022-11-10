@@ -42,7 +42,7 @@ const usePendingArena = (name: string) => {
         setLoading(false);
       }
     })();
-  }, [contract, player]);
+  }, [name, contract, player]);
 
   const playerAllowedToEnterArena = (player: Player): boolean => {
     if (!arena) {
