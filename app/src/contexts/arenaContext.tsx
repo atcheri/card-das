@@ -4,11 +4,7 @@ import { createContext, FC, PropsWithChildren, useEffect, useState } from 'react
 import useContractContext from '../hooks/useContractContext';
 import useEthContext from '../hooks/useEthContext';
 import { Arena } from '../types';
-import {
-  arenaMoveMadeEventHandler,
-  createJoinedArenaEventHandler,
-  roundEndedEventHandler,
-} from '../events/createPlayerEvent';
+import { createJoinedArenaEventHandler } from '../events/createPlayerEvent';
 import { joinArena, loadPendingArenas } from '../utils/ethereum';
 import { arenaCreated, playerJoinedArena, playerMadeAMove } from '../utils/toasters';
 
