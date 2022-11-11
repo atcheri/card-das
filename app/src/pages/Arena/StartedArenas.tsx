@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { ethers } from 'ethers';
 
 import { ROUTES } from '../../router/constants';
 import useEthContext from '../../hooks/useEthContext';
@@ -17,7 +18,9 @@ const StartedArenas: FC = () => {
   return (
     <OpenedArenas
       arenasLoader={async () =>
-        (await loadUserStartedArenas(player)(contract)).filter((a) => a.players.includes(player.address))
+        (await loadUserStartedArenas(player)(contract)).filter(
+          (a) => a.players.includes(player.address) && !a.players.includes(ethers.constants.AddressZero),
+        )
       }
       path={`/${ROUTES.ARENA}/${ROUTES.STAGE}`}
       buttonText="Resume"

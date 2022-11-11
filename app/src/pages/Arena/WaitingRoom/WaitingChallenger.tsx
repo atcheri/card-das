@@ -1,20 +1,21 @@
 import { FC } from 'react';
 
 import AvatarImage from '../../../components/Images/AvatarImage';
+import { Player } from '../../../types';
 
 import * as styles from '../../../styles';
 
 type WaitingChallengerProps = {
-  address: string;
+  player: Player;
   name?: string;
 };
 
-const WaitingChallenger: FC<WaitingChallengerProps> = ({ address, name = '*****' }) => {
+const WaitingChallenger: FC<WaitingChallengerProps> = ({ player }) => {
   return (
     <div className={`${styles.flexCenteredCentered} flex-col gap-2`}>
-      <AvatarImage address={address} />
-      <div className="text-gray-200">{name}</div>
-      <div className="text-gray-200">{address.slice(0, 20)} ...</div>
+      <AvatarImage address={player.address} avatar={player.avatar} />
+      <div className="text-gray-200">{player.name}</div>
+      <div className="text-gray-200">{player.address.slice(0, 20)} ...</div>
     </div>
   );
 };

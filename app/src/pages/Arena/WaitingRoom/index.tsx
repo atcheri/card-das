@@ -23,6 +23,10 @@ const anynomouPlayer: Player = {
   health: 10,
   mana: 10,
   inBattle: false,
+  avatar: {
+    path: '',
+    name: '*****',
+  },
 };
 
 const WaitingRoom: FC = () => {
@@ -102,11 +106,11 @@ const WaitingRoom: FC = () => {
         </div>
         {player && (
           <div className="flex justify-evenly items-center flex-col sm:flex-row">
-            <WaitingChallenger address={creator.address} name={creator.name}></WaitingChallenger>
+            <WaitingChallenger player={creator}></WaitingChallenger>
             <span className="font-omega rounded-full bg-siteRed p-4 max-sm:my-8 sm:mx-12 border-2 border-red-900 sm:text-3xl">
               VS
             </span>
-            <WaitingChallenger address={player.address} name={player.name}></WaitingChallenger>
+            <WaitingChallenger player={player}></WaitingChallenger>
           </div>
         )}
 
