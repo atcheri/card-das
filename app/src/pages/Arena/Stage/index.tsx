@@ -39,7 +39,7 @@ const Stage: FC = () => {
 
   return (
     <div className={`flex flex-col min-h-[91vh] bg-cover bg-no-repeat bg-center ${arena.background}`}>
-      <h1 className="font-omega text-center text-2xl py-6">{name}</h1>
+      <h1 className="font-omega text-center text-6xl py-6">{name}</h1>
       {!!arenaPlayer && !!arenaOponent && (
         <div className="grow flex justify-center">
           <div className="grow flex max-sm:flex-col justify-between sm:max-w-6xl">

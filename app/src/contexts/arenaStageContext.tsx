@@ -55,8 +55,8 @@ export const ArenaStageContextProvider: FC<PropsWithChildren<{}>> = ({ children 
     const oponentAddress = findOpenentAddress(p.address)(arena);
     const oponent = await getPlayerInfo(contract, oponentAddress);
     const oponentGameToken = await getPlayerGameToken(contract, oponent.address);
-    setArenaPlayer({ ...p, ...playerGameToken });
-    setArenaOponent({ ...oponent, ...oponentGameToken });
+    setArenaPlayer({ ...playerGameToken, ...p });
+    setArenaOponent({ ...oponentGameToken, ...oponent });
     setArena(arena);
   };
 

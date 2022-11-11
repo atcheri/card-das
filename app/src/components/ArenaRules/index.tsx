@@ -1,24 +1,30 @@
 import { FC, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
+import { ROUTES } from '../../router/constants';
+import DefaultButton from '../buttons/DefaultButton';
 import PrimaryButton from '../buttons/PrimaryButton';
 import Drawer from '../Drawer';
 
 const rules = [
-  'Card with the same defense and attack point will  cancel each others.',
-  'Attack points from the attacking card will deduct the opposing player’s health points.',
-  "If the Player does not defend, their health wil be deducted by the Oponent's attack.",
+  'Card with the same defense and attack point will cancel each others.',
+  'Attack points from the attacking card will deduct the opposing player’s Energy points.',
+  "If the Player does not defend, their Energy wil be deducted by the Oponent's attack.",
   "If the Player defends, the Oponent's attack is equal to Oponent.attack - Player.defense.",
-  'If a Player defends, they refill 3 Health Point',
-  'If a player attacks, they spend 3 Health Point',
+  'If a Player defends, they refill 3 Fuel Points',
+  'If a player attacks, they spend 3 Fuel Points',
 ];
 
 type ArenaRulesProps = {};
 
 const ArenaRules: FC<ArenaRulesProps> = () => {
+  const navigate = useNavigate();
   const [drawerOpened, setDrawerOpened] = useState(true);
   const toggleOpen = () => {
     setDrawerOpened((p) => !p);
   };
+  const handleGoBack = () => navigate(`/${ROUTES.ARENA}/${ROUTES.JOIN}`);
+
   return (
     <>
       <button
@@ -30,17 +36,22 @@ const ArenaRules: FC<ArenaRulesProps> = () => {
         </svg>
       </button>
       <Drawer isOpen={drawerOpened} toggleOpen={toggleOpen}>
-        <h3 className="font-omega text-3xl my-6">Arena Rules</h3>
-        {rules.map((rule, i) => {
-          return (
-            <div key={`arena-rule-${i}`} className="font-medium text-white text-xl mb-4">
-              <div className="italic">Rule {i + 1}: </div>
-              <span className="ml-6">{rule}</span>
-            </div>
-          );
-        })}
-        <div className="flex justify-end my-10">
-          <PrimaryButton onClick={toggleOpen}>Exit Arena</PrimaryButton>
+        <div className="h-full flex flex-col justify-between">
+          <div>
+            <h3 className="font-omega text-3xl my-6">Arena Rules</h3>
+            {rules.map((rule, i) => {
+              return (
+                <div key={`arena-rule-${i}`} className="font-medium text-white text-xl mb-4">
+                  <div className="italic">Rule {i + 1}: </div>
+                  <span className="ml-6">{rule}</span>
+                </div>
+              );
+            })}
+          </div>
+          <div className="flex justify-between pb-10">
+            <DefaultButton onClick={handleGoBack}>Join another Arena</DefaultButton>
+            <PrimaryButton onClick={toggleOpen}>Exit Arena</PrimaryButton>
+          </div>
         </div>
       </Drawer>
     </>
