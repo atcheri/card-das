@@ -5,6 +5,7 @@ import HeaderOne from '../../components/Headers/HeaderOne';
 import useEthContext from '../../hooks/useEthContext';
 import { ROUTES } from '../../router/constants';
 import { thereWasAnError } from '../../utils/toasters';
+import FinishedArenas from './FinishedArenas';
 import PendingArenas from './PendingArenas';
 import StartedArenas from './StartedArenas';
 
@@ -40,8 +41,10 @@ const JoinArena: FC = () => {
           Resume a <span className="font-omega">Fight</span>
         </h3>
         <StartedArenas />
+        <p className="border-t-2 border-slate-400 my-6"></p>
+        <FinishedArenas />
         <div className="flex flex-col gap-4">
-          <p className="font-omega text-xl">OR</p>
+          <p className="font-omega text-xl my-8">OR</p>
           <Link to={`/${ROUTES.ARENA}/${ROUTES.CREATE}`} className="text-siteBlue text-xl">
             Create a new <span className="font-omega">Arena</span>
           </Link>

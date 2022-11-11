@@ -24,7 +24,12 @@ const filterUserArena =
   (arena: Arena): boolean =>
     isPlayerInArena(address)(arena);
 
-const filterPendingArena = (arena: Arena): boolean => arena.status === ArenaStatus.PENDING;
+const filterArenaByStatus =
+  (status: ArenaStatus) =>
+  (arena: Arena): boolean =>
+    arena.status === status;
+const filterPendingArena = filterArenaByStatus(ArenaStatus.PENDING);
+const filterFinishedArena = filterArenaByStatus(ArenaStatus.ENDED);
 
 const toPlayer = (data: any): Player => {
   return {
@@ -132,10 +137,19 @@ export const loadPendingArenas = async (c: ethers.Contract): Promise<Arena[]> =>
   return arenas;
 };
 
+export const loadFinishedArenas = async (c: ethers.Contract): Promise<Arena[]> =>
+  (await loadAllArenas(c)).filter(filterFinishedArena);
+
 export const loadUserArenas =
   (p: Player) =>
   async (c: ethers.Contract): Promise<Arena[]> =>
     (await loadAllArenas(c)).filter(filterUserArena(p.address));
+
+export const loadUserStartedArenas =
+  (p: Player) =>
+  async (c: ethers.Contract): Promise<Arena[]> => {
+    return (await loadUserArenas(p)(c)).filter((a) => a.status !== ArenaStatus.ENDED);
+  };
 
 export const joinArena = async (c: ethers.Contract, a: string): Promise<Arena> => {
   return c.joinBattle(a);
