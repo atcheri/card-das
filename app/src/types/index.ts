@@ -14,6 +14,8 @@ export type PlayerGameToken = {
   defense: number;
 };
 
+export type ArenaPlayer = Player & PlayerGameToken;
+
 export enum ArenaStatus {
   NULL = -1,
   PENDING,

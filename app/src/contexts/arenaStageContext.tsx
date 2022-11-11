@@ -3,20 +3,9 @@ import { useParams } from 'react-router-dom';
 
 import useContractContext from '../hooks/useContractContext';
 import useEthContext from '../hooks/useEthContext';
-import { Arena, MoveType, Player, PlayerGameToken } from '../types';
+import { Arena, ArenaPlayer, MoveType, Player } from '../types';
 import { attackOrDefend, findOpenentAddress, getPlayerGameToken, getPlayerInfo, loadArena } from '../utils/ethereum';
 import { moveCancelled, playerAlreadyMadeAMove } from '../utils/toasters';
-
-// const initialArena: Arena = {
-//   status: ArenaStatus.NULL,
-//   hash: '0X0',
-//   name: '',
-//   players: [],
-//   moves: [],
-//   winner: '',
-// };
-
-type ArenaPlayer = Player & PlayerGameToken;
 
 type ArenaStageContextProps = {
   arena: Arena;

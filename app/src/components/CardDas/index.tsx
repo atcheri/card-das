@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import Tilt from 'react-parallax-tilt';
 
-import { Player } from '../../types';
+import { ArenaPlayer } from '../../types';
 import AvatarImage from '../Images/AvatarImage';
 import AttackButton from '../buttons/AttackButton';
 import DefenseButton from '../buttons/DefenseButton';
@@ -11,7 +11,7 @@ import * as styles from '../../styles';
 
 type CardDasProps = {
   disabled?: boolean;
-  player: Player;
+  player: ArenaPlayer;
 };
 
 const CardDas: FC<CardDasProps> = ({ disabled = false, player }) => {
@@ -31,8 +31,8 @@ const CardDas: FC<CardDasProps> = ({ disabled = false, player }) => {
           </div>
           <div className="flex grow w-[100%] rounded-xl">
             <div className="grow flex flex-col rounded-xl">
-              <ProgressBar color="siteGreen" current={50} max={100} />
-              <ProgressBar color="siteBlue" current={24} max={25} />
+              <ProgressBar color="siteDimBlue" current={player.health} max={25} />
+              <ProgressBar color="siteBlue" current={player.mana} max={10} />
             </div>
           </div>
         </div>

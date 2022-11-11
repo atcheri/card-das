@@ -17,7 +17,7 @@ const DefenseButton: FC<DefenseButtonProps> = ({ disabled, path, size, className
     <button
       disabled={busy || disabled}
       onClick={handleDefense}
-      className={`bg-slate-800 bg-opacity-20 border-2 border-gray-400 duration-300 transform hover:translate-y-[2px] hover:bg-slate-50 rounded-md ${className}`}>
+      className={`bg-slate-800 bg-opacity-20 border-2 border-gray-400 duration-300 transform hover:bg-slate-50 rounded-md ${className}`}>
       {busy ? (
         <TailSpin height="55" width="55" color="#4fa94d" radius="1" wrapperClass="w-14 h-14" />
       ) : (

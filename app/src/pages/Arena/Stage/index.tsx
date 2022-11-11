@@ -3,7 +3,6 @@ import { Navigate, useParams } from 'react-router-dom';
 
 import Loader from '../../../components/Loader';
 import { ROUTES } from '../../../router/constants';
-import { randomBackground } from '../../../utils/images';
 import CardDas from '../../../components/CardDas';
 import ArenaRules from '../../../components/ArenaRules';
 import useArenaStageContext from '../../../hooks/useArenaStageContext';
@@ -38,7 +37,6 @@ const Stage: FC = () => {
     );
   }
 
-  // w-screen
   return (
     <div className={`flex flex-col min-h-[91vh] bg-cover bg-no-repeat bg-center ${arena.background}`}>
       <h1 className="font-omega text-center text-2xl py-6">{name}</h1>
