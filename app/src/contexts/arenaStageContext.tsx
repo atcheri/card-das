@@ -1,8 +1,10 @@
+import { useAtom } from 'jotai';
 import { createContext, FC, PropsWithChildren, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import useContractContext from '../hooks/useContractContext';
 import useEthContext from '../hooks/useEthContext';
+import { eventsCount } from '../store';
 import { Arena, ArenaPlayer, MoveType, Player } from '../types';
 import { attackOrDefend, findOpenentAddress, getPlayerGameToken, getPlayerInfo, loadArena } from '../utils/ethereum';
 import { moveCancelled, playerAlreadyMadeAMove } from '../utils/toasters';
@@ -29,6 +31,7 @@ export const ArenaStageContextProvider: FC<PropsWithChildren<{}>> = ({ children 
   const [arena, setArena] = useState<Arena | null>(null);
   const [arenaPlayer, setArenaPlayer] = useState<ArenaPlayer | null>(null);
   const [arenaOponent, setArenaOponent] = useState<ArenaPlayer | null>(null);
+  const [counts] = useAtom(eventsCount);
 
   useEffect(() => {
     if (!name || !contract || !provider || !player) {
@@ -43,7 +46,7 @@ export const ArenaStageContextProvider: FC<PropsWithChildren<{}>> = ({ children 
         setLoading(false);
       }
     })();
-  }, [name, contract, provider, player]);
+  }, [counts, name, contract, provider, player]);
 
   const _updateStageState = async (n: string, p: Player) => {
     const arena = await getPendingArena(n);

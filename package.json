@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "jotai": "^1.9.2",
     "react-parallax-tilt": "^1.7.68"
   }
 }
