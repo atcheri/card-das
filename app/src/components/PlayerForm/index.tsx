@@ -1,20 +1,33 @@
-import { ChangeEvent, FC, FormEvent, useState } from 'react';
+import { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react';
+import { useAtom } from 'jotai';
 
 import useEthContext from '../../hooks/useEthContext';
 import PrimaryButton from '../buttons/PrimaryButton';
 import { validateName } from '../../utils/validators';
 import { alreadyRegistered, thereWasAnError } from '../../utils/toasters';
 import useContractContext from '../../hooks/useContractContext';
+import { registering } from '../../store';
+import { useNavigate } from 'react-router-dom';
 
 import * as styles from '../../styles';
+import { ROUTES } from '../../router/constants';
 
 type PlayerFormProps = {};
 
 const PlayerForm: FC<PlayerFormProps> = () => {
   const { contract } = useContractContext();
-  const { walletAddress, isPlayerAlreadyRegistered } = useEthContext();
+  const { player, walletAddress, isPlayerAlreadyRegistered } = useEthContext();
+  const navigate = useNavigate();
   const [playerName, setPlayerName] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [busy, setBusy] = useAtom(registering);
+
+  useEffect(() => {
+    if (!player) {
+      return;
+    }
+
+    navigate(`/${ROUTES.ARENA}/${ROUTES.JOIN}`);
+  }, [player]);
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -33,7 +46,7 @@ const PlayerForm: FC<PlayerFormProps> = () => {
       return;
     }
 
-    setLoading(true);
+    setBusy((p) => !p);
     try {
       const isPlayerRegistered = await isPlayerAlreadyRegistered(walletAddress);
       if (isPlayerRegistered) {
@@ -47,7 +60,7 @@ const PlayerForm: FC<PlayerFormProps> = () => {
       console.error('Player creation error:', error);
       thereWasAnError();
     } finally {
-      setLoading(false);
+      setBusy((p) => !p);
     }
   };
 
@@ -63,9 +76,9 @@ const PlayerForm: FC<PlayerFormProps> = () => {
         className={styles.input}
         onChange={handleNameChange}
         placeholder="How should we call you?"
-        disabled={loading}
+        disabled={busy}
       />
-      <PrimaryButton loading={loading} disabled={loading || !validateName(playerName)} extraStyle="my-4" type="submit">
+      <PrimaryButton loading={busy} disabled={busy || !validateName(playerName)} extraStyle="my-4" type="submit">
         Enter the arena
       </PrimaryButton>
     </form>

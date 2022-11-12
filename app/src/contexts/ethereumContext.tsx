@@ -12,7 +12,7 @@ import {
 import { Player } from '../types';
 import { playerCreated, playerMadeAMove, roundEnded } from '../utils/toasters';
 import useContractContext from '../hooks/useContractContext';
-import { eventsCount } from '../store';
+import { eventsCount, registering } from '../store';
 
 type EthereumContextProps = {
   checkingPlayer: boolean;
@@ -27,6 +27,7 @@ export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children })
   const { contract, init, provider } = useContractContext();
   const [checkingPlayer, setCheckingPlayer] = useState(() => isEthereum());
   const [, setCount] = useAtom(eventsCount);
+  const [, setBusy] = useAtom(registering);
   const [player, setPlayer] = useState<Player | null>(null);
   const [walletAddress, setWalletAddress] = useState('');
 
@@ -69,6 +70,8 @@ export const EthereumContextProvider: FC<PropsWithChildren<{}>> = ({ children })
         callbackWithResult: async (result: Result) => {
           playerCreated(result.owner);
           _updatePlayer(contract, walletAddress);
+          setBusy(() => false);
+          // maybe use the navigate function here ... better though in the React component PlayerForm itself
         },
       });
       arenaMoveMadeEventHandler({
